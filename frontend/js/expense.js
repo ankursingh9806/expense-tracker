@@ -11,6 +11,7 @@ const logoutButton = document.getElementById("logout-button");
 document.addEventListener("DOMContentLoaded", fetchExpense);
 form.addEventListener("submit", addExpense);
 logoutButton.addEventListener("click", logout);
+premiumButton.addEventListener("click", showConfirm);
 
 homeButton.addEventListener("click", function () {
     window.location.href = "../html/expense.html";
@@ -19,6 +20,27 @@ homeButton.addEventListener("click", function () {
 logoButton.addEventListener("click", function () {
     window.location.href = "../html/expense.html";
 })
+
+leaderboardButton.addEventListener("click", function (e) {
+    const confirm = window.confirm("Buy Premium to unlock all the features.");
+    if (confirm) {
+        purchasePremium(e);
+    }
+});
+
+reportButton.addEventListener("click", function (e) {
+    const confirm = window.confirm("Buy Premium to unlock all the features.");
+    if (confirm) {
+        purchasePremium(e);
+    }
+});
+
+function showConfirm(e) {
+    const confirm = window.confirm("Buy Premium and unlock all the features.");
+    if (confirm) {
+        purchasePremium(e);
+    }
+};
 
 async function fetchExpense() {
     try {
@@ -198,5 +220,47 @@ async function logout() {
         }
     } catch (err) {
         console.error("failed to logout:", err);
+    }
+}
+
+async function purchasePremium(e) {
+    try {
+        e.preventDefault();
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://localhost:3000/purchase/purchase-premium", {
+            headers: {
+                Authorization: token
+            }
+        });
+        let options = {
+            "key": res.data.key_id,
+            "order_id": res.data.order.id,
+            "handler": async function (response) {
+                try {
+                    const res = await axios.post("http://localhost:3000/purchase/update-transaction-status", {
+                        order_id: options.order_id,
+                        payment_id: response.razorpay_payment_id,
+                    }, {
+                        headers: {
+                            Authorization: token
+                        }
+                    })
+                    alert("Welcome to Premium Membership! You've unlocked all the features.");
+                    window.location.reload();
+                    localStorage.setItem("token", res.data.token);
+                } catch (err) {
+                    console.err("error updating transaction status:", err);
+                    alert("Failed to update transaction status");
+                }
+            },
+        };
+        const rzp = new Razorpay(options);
+        rzp.open();
+        rzp.on("payment.failed", function (response) {
+            alert("Payment failed. Please try again.");
+        });
+    } catch (err) {
+        console.error("error purchasing premium membership:", err);
+        alert("Failed to purchase premium membership");
     }
 }
