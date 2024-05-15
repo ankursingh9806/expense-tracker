@@ -10,6 +10,7 @@ const logoutButton = document.getElementById("logout-button");
 
 document.addEventListener("DOMContentLoaded", fetchExpense);
 form.addEventListener("submit", addExpense);
+logoutButton.addEventListener("click", logout);
 
 homeButton.addEventListener("click", function () {
     window.location.href = "../html/expense.html";
@@ -183,5 +184,19 @@ async function updateExpense(expense, expenseId, tableRow) {
         }
     } catch (err) {
         console.error("failed to update expense:", err);
+    }
+}
+
+async function logout() {
+    try {
+        const res = await axios.post("http://localhost:3000/user/logout");
+        if (res.status === 200) {
+            localStorage.removeItem("token");
+            window.location.href = "../html/login.html";
+        } else {
+            alert("Failed to logout");
+        }
+    } catch (err) {
+        console.error("failed to logout:", err);
     }
 }
