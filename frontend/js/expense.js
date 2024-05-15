@@ -21,7 +21,12 @@ logoButton.addEventListener("click", function () {
 
 async function fetchExpense() {
     try {
-        const res = await axios.get("http://localhost:3000/expense/expense-fetch");
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://localhost:3000/expense/expense-fetch", {
+            headers: {
+                Authorization: token
+            }
+        });
         if (res.status === 200) {
             res.data.expenses.forEach((expense) => {
                 showOnScreen(expense);
@@ -49,7 +54,12 @@ async function addExpense(e) {
             error.textContent = "Please fill out all fields."
             return;
         }
-        const res = await axios.post("http://localhost:3000/expense/expense-add", expenseData,);
+        const token = localStorage.getItem("token");
+        const res = await axios.post("http://localhost:3000/expense/expense-add", expenseData, {
+            headers: {
+                Authorization: token
+            }
+        });
         if (res.status === 201) {
             showOnScreen(res.data.newExpense);
             form.reset();
@@ -88,7 +98,12 @@ function showOnScreen(expense) {
 
 async function deleteExpense(expense, expenseId, tableRow) {
     try {
-        const res = await axios.delete(`http://localhost:3000/expense/expense-delete/${expenseId}`);
+        const token = localStorage.getItem("token");
+        const res = await axios.delete(`http://localhost:3000/expense/expense-delete/${expenseId}`, {
+            headers: {
+                Authorization: token
+            }
+        });
         if (res.status === 200) {
             tableBody.removeChild(tableRow);
         } else {
@@ -127,8 +142,12 @@ async function updateExpense(expense, expenseId, tableRow) {
                     error.textContent = "Please fill out all fields."
                     return;
                 }
-
-                const res = await axios.put(`http://localhost:3000/expense/expense-update/${expenseId}`, updatedExpenseData);
+                const token = localStorage.getItem("token");
+                const res = await axios.put(`http://localhost:3000/expense/expense-update/${expenseId}`, updatedExpenseData, {
+                    headers: {
+                        Authorization: token
+                    }
+                });
                 if (res.status === 200) {
                     expense.amount = updatedAmount;
                     expense.description = updatedDescription;
