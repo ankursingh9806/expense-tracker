@@ -12,7 +12,7 @@ const expensePage = async (req, res, next) => {
 
 const fetchExpense = async (req, res, next) => {
     try {
-        const expenses = await Expense.findAll();
+        const expenses = await Expense.findAll({ where: { UserId: req.user.id } });
         res.status(200).json({ expenses, success: true, message: "expenses fetched" });
     } catch (err) {
         console.error("error fetching expenses:", err);
@@ -27,6 +27,7 @@ const addExpense = async (req, res, next) => {
             amount: amount,
             description: description,
             category: category,
+            UserId: req.user.id,
         });
         res.status(201).json({ newExpense, success: true, message: "expense added" });
     } catch (err) {
@@ -39,7 +40,7 @@ const deleteExpense = async (req, res, next) => {
     try {
         const expenseId = req.params.expenseId;
         const expense = await Expense.findByPk(expenseId);
-        await expense.destroy();
+        await expense.destroy({ where: { UserId: req.user.id } });
         res.status(200).json({ success: true, message: "expense deleted" });
     } catch (err) {
         console.error("error deleting expense:", err);
@@ -56,7 +57,7 @@ const updateExpense = async (req, res, next) => {
             description: description,
             category: category
         };
-        await Expense.update(updatedExpense, { where: { id: expenseId } });
+        await Expense.update(updatedExpense, { where: { id: expenseId, UserId: req.user.id } });
         res.status(200).json({ success: true, message: "expense updated" });
     } catch (err) {
         console.error("error updating expense:", err);
