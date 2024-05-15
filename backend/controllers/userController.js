@@ -74,10 +74,20 @@ const login = async (req, res, next) => {
     }
 }
 
+const logout = async (req, res, next) => {
+    try {
+        res.status(200).json({ success: true, message: "user logged out" });
+    } catch (err) {
+        console.error("error in logout:", err);
+        res.status(500).json({ success: false, error: "internal server error" });
+    }
+}
+
 module.exports = {
     signupPage,
     loginPage,
     signup,
     login,
     generateAccessToken,
+    logout,
 }
