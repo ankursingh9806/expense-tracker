@@ -18,6 +18,7 @@ async function login(e) {
         }
         const res = await axios.post("http://localhost:3000/user/login", loginDetails);
         if (res.status === 200) {
+            localStorage.setItem("token", res.data.token);
             window.location.href = "../html/expense.html";
         } else {
             error.textContent = "Login failed. Please try again later.";
