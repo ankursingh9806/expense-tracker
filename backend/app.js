@@ -10,9 +10,11 @@ const cors = require("cors");
 const sequelize = require("./utils/database");
 const userRoute = require("./routes/userRoute");
 const expenseRoute = require("./routes/expenseRoute");
+const purchaseRoute = require("./routes/purchaseRoute");
 
 const User = require("./models/userModel")
 const Expense = require("./models/expenseModel")
+const Order = require("./models/orderModel");
 
 app.use(express.static(path.join(__dirname, "..", "frontend")));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,9 +23,13 @@ app.use(cors());
 
 app.use("/user", userRoute);
 app.use("/expense", expenseRoute);
+app.use("/purchase", purchaseRoute);
 
 User.hasMany(Expense);
 Expense.belongsTo(User);
+
+User.hasMany(Order);
+Order.belongsTo(User);
 
 sequelize
     //.sync({ force: true })
