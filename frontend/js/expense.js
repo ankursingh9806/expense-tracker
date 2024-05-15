@@ -9,6 +9,7 @@ const reportButton = document.getElementById("report");
 const logoutButton = document.getElementById("logout-button");
 
 document.addEventListener("DOMContentLoaded", fetchExpense);
+document.addEventListener("DOMContentLoaded", isPremiumUser);
 form.addEventListener("submit", addExpense);
 logoutButton.addEventListener("click", logout);
 premiumButton.addEventListener("click", showConfirm);
@@ -20,20 +21,6 @@ homeButton.addEventListener("click", function () {
 logoButton.addEventListener("click", function () {
     window.location.href = "../html/expense.html";
 })
-
-leaderboardButton.addEventListener("click", function (e) {
-    const confirm = window.confirm("Buy Premium to unlock all the features.");
-    if (confirm) {
-        purchasePremium(e);
-    }
-});
-
-reportButton.addEventListener("click", function (e) {
-    const confirm = window.confirm("Buy Premium to unlock all the features.");
-    if (confirm) {
-        purchasePremium(e);
-    }
-});
 
 function showConfirm(e) {
     const confirm = window.confirm("Buy Premium and unlock all the features.");
@@ -262,5 +249,40 @@ async function purchasePremium(e) {
     } catch (err) {
         console.error("error purchasing premium membership:", err);
         alert("Failed to purchase premium membership");
+    }
+}
+
+async function isPremiumUser() {
+    try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://localhost:3000/user/is-premium-user", {
+            headers: {
+                Authorization: token
+            },
+        });
+        if (res.data.isPremiumUser) {
+            premiumButton.innerHTML = "You are a Premium user!";
+            premiumButton.removeEventListener("click", showConfirm);
+            leaderboardButton.className = "nav-link active";
+            reportButton.className = "nav-link active";
+            leaderboardButton.addEventListener("click", function () {
+                window.location.href = "../html/leaderboard.html";
+            });
+        } else {
+            leaderboardButton.addEventListener("click", function (e) {
+                const confirm = window.confirm("Buy Premium to unlock all the features.");
+                if (confirm) {
+                    buyPremium(e);
+                }
+            });
+            reportButton.addEventListener("click", function (e) {
+                const confirm = window.confirm("Buy Premium to unlock all the features.");
+                if (confirm) {
+                    buyPremium(e);
+                }
+            });
+        }
+    } catch (err) {
+        console.error("error checking premium user status:", err);
     }
 }
