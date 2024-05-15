@@ -1,0 +1,40 @@
+.container {
+    margin: 50px auto;
+    padding: 20px;
+    max-width: 400px;
+}
+
+button {
+    width: 100%;
+}
+
+h1 {
+    text-align: center;
+    font-size: 30px;
+    color: seagreen;
+}
+
+h2 {
+    text-align: center;
+    font-size: 15px;
+    padding: 10px;
+}
+
+p {
+    text-align: center;
+    margin-top: 10px;
+}
+
+a {
+    color: seagreen;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    font-size: small;
+    margin-bottom: 20px;
+}
