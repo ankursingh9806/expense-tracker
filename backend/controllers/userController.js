@@ -83,6 +83,19 @@ const logout = async (req, res, next) => {
     }
 }
 
+const isPremiumUser = async (req, res, next) => {
+    try {
+        if (req.user.isPremiumUser) {
+            return res.json({ isPremiumUser: true });
+        } else {
+            return res.json({ isPremiumUser: false });
+        }
+    } catch (err) {
+        console.error("error checking premium user status:", err);
+        res.status(500).json({ success: false, error: "internal server error" });
+    }
+};
+
 module.exports = {
     signupPage,
     loginPage,
@@ -90,4 +103,5 @@ module.exports = {
     login,
     generateAccessToken,
     logout,
+    isPremiumUser,
 }
