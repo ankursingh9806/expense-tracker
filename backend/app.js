@@ -9,6 +9,7 @@ const cors = require("cors");
 
 const sequelize = require("./utils/database");
 const userRoute = require("./routes/userRoute");
+const expenseRoute = require("./routes/expenseRoute");
 
 app.use(express.static(path.join(__dirname, "..", "frontend")));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use("/user", userRoute);
+app.use("/expense", expenseRoute);
 
 sequelize
     //.sync({ force: true })
