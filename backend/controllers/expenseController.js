@@ -69,16 +69,16 @@ const updateExpense = async (req, res, next) => {
     try {
         const expenseId = req.params.expenseId;
         const { amount, description, category } = req.body;
+        const expense = await Expense.findByPk(expenseId);
         const updatedExpense = {
             amount: amount,
             description: description,
             category: category
         };
+        const totalExpenses = Number(req.user.totalExpenses) - Number(expense.amount) + Number(amount);
         await Expense.update(updatedExpense, { where: { id: expenseId, UserId: req.user.id } });
 
         // update total expense
-        const expense = await Expense.findByPk(expenseId);
-        const totalExpenses = Number(req.user.totalExpenses) - Number(expense.amount) + Number(amount);
         await User.update(
             { totalExpenses: totalExpenses },
             { where: { id: req.user.id } },
