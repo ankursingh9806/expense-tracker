@@ -1,4 +1,5 @@
 const Expense = require("../models/expenseModel");
+const User = require("../models/userModel");
 const path = require("path");
 
 const expensePage = async (req, res, next) => {
@@ -29,6 +30,14 @@ const addExpense = async (req, res, next) => {
             category: category,
             UserId: req.user.id,
         });
+
+        // update total expense
+        const totalExpenses = Number(req.user.totalExpenses) + Number(amount);
+        await User.update(
+            { totalExpenses: totalExpenses },
+            { where: { id: req.user.id } },
+        );
+
         res.status(201).json({ newExpense, success: true, message: "expense added" });
     } catch (err) {
         console.error("error adding expense:", err);
@@ -41,6 +50,14 @@ const deleteExpense = async (req, res, next) => {
         const expenseId = req.params.expenseId;
         const expense = await Expense.findByPk(expenseId);
         await expense.destroy({ where: { UserId: req.user.id } });
+
+        // update total expense
+        const totalExpenses = Number(req.user.totalExpenses) - Number(expense.amount);
+        await User.update(
+            { totalExpenses: totalExpenses },
+            { where: { id: req.user.id } },
+        );
+
         res.status(200).json({ success: true, message: "expense deleted" });
     } catch (err) {
         console.error("error deleting expense:", err);
@@ -58,6 +75,15 @@ const updateExpense = async (req, res, next) => {
             category: category
         };
         await Expense.update(updatedExpense, { where: { id: expenseId, UserId: req.user.id } });
+
+        // update total expense
+        const expense = await Expense.findByPk(expenseId);
+        const totalExpenses = Number(req.user.totalExpenses) - Number(expense.amount) + Number(amount);
+        await User.update(
+            { totalExpenses: totalExpenses },
+            { where: { id: req.user.id } },
+        );
+
         res.status(200).json({ success: true, message: "expense updated" });
     } catch (err) {
         console.error("error updating expense:", err);
