@@ -1,0 +1,37 @@
+.container {
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+h1 {
+    font-size: 20px;
+    color: seagreen;
+    padding: 5px;
+}
+
+button[id="logout-button"] {
+    width: auto;
+}
+
+button[id="premium-button"] {
+    width: auto;
+    margin-right: 20px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.table {
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-weight: normal;
+}
+
+.table td {
+    border: 1px solid #ddd;
+}
