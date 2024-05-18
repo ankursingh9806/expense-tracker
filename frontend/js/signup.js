@@ -20,6 +20,7 @@ async function signup(e) {
         }
         const res = await axios.post("http://localhost:3000/user/signup", signupDetails);
         if (res.status === 201) {
+            alert("Signup successfull! Please login to continue.")
             window.location.href = "../html/login.html";
         } else {
             error.textContent = "Signup failed. Please try again later.";
