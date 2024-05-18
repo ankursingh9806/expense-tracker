@@ -16,6 +16,7 @@ async function forgotPassword(e) {
         }
         const res = await axios.post("http://localhost:3000/password/forgot-password", forgotPasswordDetail);
         if (res.status === 200) {
+            error.textContent = "";
             document.querySelector("#email").remove();
             document.querySelector("button[type='submit']").remove();
             document.querySelector("h3").innerHTML = `<h3 style='text-align: center;'>We have sent you an email. Please check your email ${email} to reset your password</h3>`
