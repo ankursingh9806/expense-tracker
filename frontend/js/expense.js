@@ -42,7 +42,7 @@ async function fetchExpense() {
                 showOnScreen(expense);
             });
         } else {
-            error.textContent = "Failed to load expenses";
+            alert("Failed to load expenses");
         }
     } catch (err) {
         console.error("failed to load expenses from database:", err);
