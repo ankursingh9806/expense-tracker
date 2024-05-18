@@ -1,0 +1,19 @@
+const Sequelize = require("sequelize");
+const sequelize = require("../utils/database");
+
+const ResetPassword = sequelize.define("resetpassword", {
+    id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        allowNull: false,
+        primaryKey: true
+    },
+    active: {
+        type: Sequelize.BOOLEAN,
+    },
+    expiresby: {
+        type: Sequelize.DATE,
+    }
+});
+
+module.exports = ResetPassword;
