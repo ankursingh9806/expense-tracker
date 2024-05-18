@@ -11,9 +11,6 @@ const ResetPassword = sequelize.define("resetpassword", {
     active: {
         type: Sequelize.BOOLEAN,
     },
-    expiresby: {
-        type: Sequelize.DATE,
-    }
 });
 
 module.exports = ResetPassword;
