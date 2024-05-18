@@ -18,6 +18,7 @@ async function resetPassword(e) {
         }
         const res = await axios.post(`http://localhost:3000/password/reset-password/${resetId}`, newPasswordDetail);
         if (res.status === 200) {
+            error.textContent = "";
             document.querySelector("#password").remove();
             document.querySelector("button[type='submit']").remove();
             document.querySelector("h2").innerHTML = "<h2 style='text-align: center;'>Password changed!</h2>";
