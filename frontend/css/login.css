@@ -2,6 +2,12 @@
     margin: 50px auto;
     padding: 20px;
     max-width: 400px;
+    border-radius: 10px;
+    background-color: #212529;
+}
+
+body {
+    background-color: #343a40;
 }
 
 button {
@@ -12,23 +18,26 @@ button {
 h1 {
     text-align: center;
     font-size: 30px;
-    color: seagreen;
+    color: white;
 }
 
 h2 {
     text-align: center;
     font-size: 15px;
     padding: 10px;
+    color: lightgray;
 }
 
 p {
     text-align: center;
     margin-top: 10px;
+    color: lightgray;
 }
 
 a {
-    color: seagreen;
+    color: lightgray;
     text-decoration: none;
+    font-weight: bold;
 }
 
 a:hover {
