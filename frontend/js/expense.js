@@ -49,18 +49,22 @@ async function fetchExpense() {
     }
 }
 
+const date = new Date();
+
 async function addExpense(e) {
     try {
         e.preventDefault();
+        const date = e.target.date.value;
         const amount = e.target.amount.value;
         const description = e.target.description.value;
         const category = e.target.category.value;
         const expenseData = {
+            date: date,
             amount: amount,
             description: description,
             category: category
         };
-        if (!expenseData.amount || !expenseData.description || !expenseData.category) {
+        if (!expenseData.date || !expenseData.amount || !expenseData.description || !expenseData.category) {
             error.textContent = "Please fill out all fields."
             return;
         }
@@ -85,15 +89,16 @@ async function addExpense(e) {
 function showOnScreen(expense) {
     const tableRow = document.createElement("tr");
     tableRow.innerHTML = `
+    <td>${expense.date}</td>
     <td>${expense.amount}</td>
     <td>${expense.description}</td>
     <td>${expense.category}</td>
     <td>
-        <button class="btn btn-success btn-sm">Delete</button>
-        <button class="btn btn-success btn-sm">Edit</button>
+        <button class="btn btn-success btn-sm delete-button">Delete</button>
+        <button class="btn btn-success btn-sm edit-button">Edit</button>
     </td>`;
-    const deleteButton = tableRow.querySelector(".btn.btn-success.btn-sm");
-    const editButton = tableRow.querySelector(".btn.btn-success.btn-sm");
+    const deleteButton = tableRow.querySelector(".delete-button");
+    const editButton = tableRow.querySelector(".edit-button");
 
     let expenseId = expense.id;
     deleteButton.addEventListener("click", function () {
@@ -126,6 +131,7 @@ async function deleteExpense(expense, expenseId, tableRow) {
 
 async function updateExpense(expense, expenseId, tableRow) {
     try {
+        document.getElementById("date").value = expense.date;
         document.getElementById("amount").value = expense.amount;
         document.getElementById("description").value = expense.description;
         document.getElementById("category").value = expense.category;
@@ -138,17 +144,19 @@ async function updateExpense(expense, expenseId, tableRow) {
         async function editExpenseData(e) {
             try {
                 e.preventDefault();
+                const updatedDate = e.target.date.value;
                 const updatedAmount = e.target.amount.value;
                 const updatedDescription = e.target.description.value;
                 const updatedCategory = e.target.category.value;
 
                 const updatedExpenseData = {
+                    date: updatedDate,
                     amount: updatedAmount,
                     description: updatedDescription,
                     category: updatedCategory
                 };
 
-                if (!updatedExpenseData.amount || !updatedExpenseData.description || !updatedExpenseData.category) {
+                if (!updatedExpenseData.date || !updatedExpenseData.amount || !updatedExpenseData.description || !updatedExpenseData.category) {
                     error.textContent = "Please fill out all fields."
                     return;
                 }
@@ -159,21 +167,23 @@ async function updateExpense(expense, expenseId, tableRow) {
                     }
                 });
                 if (res.status === 200) {
+                    expense.date = updatedDate;
                     expense.amount = updatedAmount;
                     expense.description = updatedDescription;
                     expense.category = updatedCategory;
 
                     tableRow.innerHTML = `
+                        <td>${expense.date}</td>
                         <td>${expense.amount}</td>
                         <td>${expense.description}</td>
                         <td>${expense.category}</td>
                         <td>
-                            <button class="btn btn-outline-danger btn-sm">Delete</button>
-                            <button class="btn btn-outline-success btn-sm">Edit</button>
+                              <button class="btn btn-success btn-sm delete-button">Delete</button>
+                              <button class="btn btn-success btn-sm edit-button">Edit</button>
                         </td>`;
-
-                    const deleteButton = tableRow.querySelector(".btn.btn-outline-danger.btn-sm");
-                    const editButton = tableRow.querySelector(".btn.btn-outline-success.btn-sm");
+                    const deleteButton = tableRow.querySelector(".delete-button");
+                    const editButton = tableRow.querySelector(".edit-button");
+                    
                     deleteButton.addEventListener("click", function () {
                         deleteExpense(expense, expenseId, tableRow);
                     });
@@ -181,7 +191,7 @@ async function updateExpense(expense, expenseId, tableRow) {
                         updateExpense(expense, expenseId, tableRow);
                     });
 
-                    form.reset();
+                    window.location.reload();
                     error.textContent = "";
                     document.getElementById("submit-button").textContent = "Add Expense";
                 } else {
