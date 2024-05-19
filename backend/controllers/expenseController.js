@@ -25,8 +25,9 @@ const fetchExpense = async (req, res, next) => {
 const addExpense = async (req, res, next) => {
     const t = await sequelize.transaction();
     try {
-        const { amount, description, category } = req.body;
+        const { date, amount, description, category } = req.body;
         const newExpense = await Expense.create({
+            date: date,
             amount: amount,
             description: description,
             category: category,
@@ -81,9 +82,10 @@ const updateExpense = async (req, res, next) => {
     const t = await sequelize.transaction();
     try {
         const expenseId = req.params.expenseId;
-        const { amount, description, category } = req.body;
+        const { date, amount, description, category } = req.body;
         const expense = await Expense.findByPk(expenseId);
         const updatedExpense = {
+            date: date,
             amount: amount,
             description: description,
             category: category
