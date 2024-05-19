@@ -94,8 +94,8 @@ function showOnScreen(expense) {
     <td>${expense.description}</td>
     <td>${expense.category}</td>
     <td>
-        <button class="btn btn-success btn-sm delete-button">Delete</button>
-        <button class="btn btn-success btn-sm edit-button">Edit</button>
+        <button class="btn btn-sm delete-button">Delete</button>
+        <button class="btn btn-sm edit-button">Edit</button>
     </td>`;
     const deleteButton = tableRow.querySelector(".delete-button");
     const editButton = tableRow.querySelector(".edit-button");

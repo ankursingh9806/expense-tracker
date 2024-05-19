@@ -29,8 +29,8 @@ async function resetPassword(e) {
     } catch (err) {
         if (err.response && err.response.status === 404) {
             error.textContent = "Email not found. Please signup.";
-        } else if (err.response && err.response.status === 401) {
-            error.textContent = "Incorrect password. Please try again.";
+        } else if (err.response && err.response.status === 400) {
+            error.textContent = "Link expired! Please request a new link.";
         } else {
             error.textContent = "An error occurred in changing password. Please try again later.";
         }
