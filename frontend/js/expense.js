@@ -1,7 +1,7 @@
 const form = document.getElementById("expense-form");
 const tableBody = document.getElementById("expense-list");
 const error = document.getElementById("error");
-const premiumButton = document.getElementById("premium-button");
+const premiumButton = document.getElementById("premium");
 const homeButton = document.getElementById("home");
 const logoButton = document.getElementById("logo");
 const leaderboardButton = document.getElementById("leaderboard");
@@ -89,11 +89,11 @@ function showOnScreen(expense) {
     <td>${expense.description}</td>
     <td>${expense.category}</td>
     <td>
-        <button class="btn btn-outline-danger btn-sm">Delete</button>
-        <button class="btn btn-outline-success btn-sm">Edit</button>
+        <button class="btn btn-success btn-sm">Delete</button>
+        <button class="btn btn-success btn-sm">Edit</button>
     </td>`;
-    const deleteButton = tableRow.querySelector(".btn.btn-outline-danger.btn-sm");
-    const editButton = tableRow.querySelector(".btn.btn-outline-success.btn-sm");
+    const deleteButton = tableRow.querySelector(".btn.btn-success.btn-sm");
+    const editButton = tableRow.querySelector(".btn.btn-success.btn-sm");
 
     let expenseId = expense.id;
     deleteButton.addEventListener("click", function () {
@@ -261,26 +261,19 @@ async function isPremiumUser() {
             },
         });
         if (res.data.isPremiumUser) {
-            premiumButton.innerHTML = "You are a Premium user!";
+            premiumButton.textContent = "Premium Member";
+            leaderboardButton.textContent = "LeaderBoard";
+            reportButton.textContent = "Report";
             premiumButton.removeEventListener("click", showConfirm);
-            leaderboardButton.className = "nav-link active";
-            reportButton.className = "nav-link active";
             leaderboardButton.addEventListener("click", function () {
                 window.location.href = "../html/leaderboard.html";
             });
+            reportButton.addEventListener("click", function () {
+                window.location.href = "../html/report.html";
+            })
         } else {
-            leaderboardButton.addEventListener("click", function (e) {
-                const confirm = window.confirm("Buy Premium to unlock all the features.");
-                if (confirm) {
-                    buyPremium(e);
-                }
-            });
-            reportButton.addEventListener("click", function (e) {
-                const confirm = window.confirm("Buy Premium to unlock all the features.");
-                if (confirm) {
-                    buyPremium(e);
-                }
-            });
+            leaderboardButton.addEventListener("click", showConfirm);
+            reportButton.addEventListener("click", showConfirm);
         }
     } catch (err) {
         console.error("error checking premium user status:", err);
