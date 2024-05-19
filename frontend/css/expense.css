@@ -34,6 +34,7 @@
 
 .error-message {
     font-size: small;
+    margin-top: 10px;
 }
 
 .navbar {
@@ -54,11 +55,29 @@
     background-color: darkseagreen;
 }
 
-th:nth-child(4) {
-    text-align: right;
+th:nth-child(1),
+td:nth-child(1) {
+    width: 20%;
 }
 
+th:nth-child(2),
+td:nth-child(2) {
+    width: 20%;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    width: 20%;
+}
+
+th:nth-child(4),
 td:nth-child(4) {
+    width: 20%;
+}
+
+th:nth-child(5),
+td:nth-child(5) {
+    width: 20%;
     text-align: right;
 }
 
