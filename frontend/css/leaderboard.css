@@ -3,12 +3,16 @@
     max-width: 800px;
     border-radius: 10px;
     padding: 20px;
-    background-color: darkseagreen;
-    box-shadow: 4px 4px 8px darkseagreen;
+    background-color: #454d55;
+}
+
+body {
+    background-color: #343a40;
 }
 
 h2 {
     margin-right: 40px;
+    color: white;
 }
 
 #logout-button {
@@ -17,34 +21,35 @@ h2 {
 
 #premium {
     margin-right: 30px;
+    color: white;
 }
 
 .navbar {
-    background-color: seagreen;
+    background-color: #212529;
 }
 
 .table {
-    background-color: darkseagreen;
+    background-color: #454d55;
 }
 
 .table th {
-    background-color: seagreen;
+    background-color: #343a40;
     color: white;
-    margin-bottom: 2px;
     text-align: center;
 }
 
 .table td {
-    background-color: darkseagreen;
+    background-color: #454d55;
+    color: white;
     text-align: center;
 }
 
-.table thead th:first-child {
+.table th:first-child {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
 }
 
-.table thead th:last-child {
+.table th:last-child {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }
