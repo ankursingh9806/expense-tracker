@@ -45,6 +45,9 @@
         <form id="expense-form" action="/expense/expense-add" method="post" novalidate>
             <div class="row">
                 <div class="col">
+                    <input class="form-control" type="date" id="date" name="date" placeholder="Date" required>
+                </div>
+                <div class="col">
                     <input class="form-control" type="number" id="amount" name="amount" placeholder="Amount" required>
                 </div>
                 <div class="col">
@@ -64,7 +67,7 @@
                         <option value="Clothing">Clothing</option>
                         <option value="Education">Education</option>
                         <option value="Personal Care">Personal Care</option>
-                        <option value="Miscellaneous">Miscellaneous</option>
+                        <option value="Others">Others</option>
                     </select>
                 </div>
                 <div class="col">
@@ -80,6 +83,7 @@
         <table class="table table-borderless table-sm table-hover">
             <thead>
                 <tr>
+                    <th scope="col">Date</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Description</th>
                     <th scope="col">Category</th>
