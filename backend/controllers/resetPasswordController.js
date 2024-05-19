@@ -49,10 +49,10 @@ const forgotPassword = async (req, res, next) => {
             to: email,
             subject: "Reset your password",
             html: `
-            <h1 style='color: seagreen;'>EXPENSE TRACKER</h1><br>
-            <h2>Reset password</h2><br>
+            <h1 style='color: #343a40;'>EXPENSE TRACKER</h1>
+            <h2>Reset password</h2>
             <p>Please click on the link below to reset your account password:</p>
-            <a href="http://localhost:3000/password/reset-password-page/${requestId}" style='color: seagreen; font-weight: bold;'>Reset password</a>`
+            <a href="http://localhost:3000/password/reset-password-page/${requestId}" style='color: #343a40; font-weight: bold;'>Reset password</a>`
         };
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
