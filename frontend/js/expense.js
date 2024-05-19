@@ -271,9 +271,7 @@ async function isPremiumUser() {
             },
         });
         if (res.data.isPremiumUser) {
-            premiumButton.textContent = "Premium Member";
-            leaderboardButton.textContent = "LeaderBoard";
-            reportButton.textContent = "Report";
+            premiumButton.textContent = "Premium Member 👑";
             premiumButton.removeEventListener("click", showConfirm);
             leaderboardButton.addEventListener("click", function () {
                 window.location.href = "../html/leaderboard.html";
