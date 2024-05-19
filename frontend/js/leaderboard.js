@@ -1,6 +1,7 @@
 const homeButton = document.getElementById("home");
 const logoButton = document.getElementById("logo");
 const leaderboardButton = document.getElementById("leaderboard");
+const reportButton = document.getElementById("report");
 const logoutButton = document.getElementById("logout-button");
 
 logoutButton.addEventListener("click", logout);
@@ -16,6 +17,10 @@ logoButton.addEventListener("click", function () {
 
 leaderboardButton.addEventListener("click", function () {
     window.location.href = "../html/leaderboard.html";
+})
+
+reportButton.addEventListener("click", function () {
+    window.location.href = "../html/report.html";
 })
 
 async function logout() {
@@ -36,8 +41,10 @@ async function leaderboardShow() {
     try {
         const res = await axios.get("http://localhost:3000/premium/leaderboard-show");
         if (res.status === 200) {
+            let position = 1;
             res.data.userLeaderboard.forEach((users) => {
-                showOnScreen(users);
+                showOnScreen(users, position);
+                position++;
             });
         } else {
             alert("Failed to load leaderboard");
@@ -47,9 +54,9 @@ async function leaderboardShow() {
     }
 }
 
-function showOnScreen(userLeaderboard) {
+function showOnScreen(userLeaderboard, position) {
     const tableBody = document.getElementById("table-list");
     const tableRow = document.createElement("tr");
-    tableRow.innerHTML = `<td>${userLeaderboard.name}</td><td>${userLeaderboard.totalExpenses}</td>`;
+    tableRow.innerHTML = `<td>${position}</td><td>${userLeaderboard.name}</td><td>${userLeaderboard.totalExpenses}</td>`;
     tableBody.appendChild(tableRow);
 }
