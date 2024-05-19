@@ -19,7 +19,7 @@
 <body>
 
     <!-- nav bar -->
-    <nav class="navbar navbar-expand-lg bg-success">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="#" id="logo">EXPENSE TRACKER</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -29,12 +29,10 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav me-auto">
                     <a class="nav-link active" href="#" id="home">Home</a>
-                    <a class="nav-link" href="#" id="leaderboard">Leaderboard</a>
-                    <a class="nav-link" href="#" id="report">Report</a>
+                    <a class="nav-link active" href="#" id="leaderboard">LeaderBoard 👑</a>
+                    <a class="nav-link active" href="#" id="report">Report 👑</a>
                 </div>
-                <form class="d-flex">
-                    <button class="btn btn-warning" type="submit" id="premium-button">Buy Premium</button>
-                </form>
+                <a class="nav-link" href="#" id="premium">Buy Premium 👑</a>
                 <form class="d-flex">
                     <button class="btn btn-danger" type="submit" id="logout-button">Logout</button>
                 </form>
@@ -44,7 +42,6 @@
 
     <!-- expense form -->
     <div class="container">
-        <h1>Add a new Expense</h1>
         <form id="expense-form" action="/expense/expense-add" method="post" novalidate>
             <div class="row">
                 <div class="col">
@@ -80,18 +77,16 @@
 
     <!-- expense table -->
     <div class="container-fluid">
-        <table class="table">
-            <h1>List of Expenses</h1>
+        <table class="table table-borderless table-sm table-hover">
             <thead>
                 <tr>
                     <th scope="col">Amount</th>
                     <th scope="col">Description</th>
                     <th scope="col">Category</th>
-                    <th scope="col">Action</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
-            <tbody id="expense-list">
-            </tbody>
+            <tbody id="expense-list"></tbody>
         </table>
     </div>
 
