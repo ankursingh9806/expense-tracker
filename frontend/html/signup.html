@@ -11,7 +11,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <!-- link to css file -->
-    <link href="../css/signup.css" rel="stylesheet">
+    <link href="/css/signup.css" rel="stylesheet">
 
     <title>Signup</title>
 </head>
@@ -21,16 +21,15 @@
     <div class="container">
         <h1>EXPENSE TRACKER</h1>
         <h2>Create an account</h2>
-        <form id="signup-form" action="/user/signup" method="post" novalidate>
+        <form id="signup-form" novalidate>
             <div class="mb-3">
-                <input class="form-control" type="text" id="name" name="name" placeholder="Name" required>
+                <input class="form-control" type="text" id="name" name="name" placeholder="Name">
             </div>
             <div class="mb-3">
-                <input class="form-control" type="email" id="email" name="email" placeholder="Email" required>
+                <input class="form-control" type="email" id="email" name="email" placeholder="Email">
             </div>
             <div class="mb-3">
-                <input class="form-control" type="password" id="password" name="password" placeholder="Password"
-                    required>
+                <input class="form-control" type="password" id="password" name="password" placeholder="Password">
             </div>
             <div class="error-message text-danger" id="error"></div>
             <button class="btn btn-secondary" type="submit">Signup</button>
@@ -47,7 +46,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <!-- link to js file -->
-    <script src="../js/signup.js" defer></script>
+    <script src="/js/signup.js" defer></script>
 </body>
 
 </html>
