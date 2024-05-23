@@ -40,12 +40,12 @@ const forgotPassword = async (req, res, next) => {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: process.env.USER,
-                pass: process.env.PASS
+                user: process.env.NODEMAILER_USER,
+                pass: process.env.NODEMAILER_PASS
             },
         });
         const mailOptions = {
-            from: process.env.USER,
+            from: process.env.NODEMAILER_USER,
             to: email,
             subject: "Reset your password",
             html: `
