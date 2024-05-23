@@ -11,7 +11,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <!-- link to css file -->
-    <link href="../css/login.css" rel="stylesheet">
+    <link href="/css/login.css" rel="stylesheet">
 
     <title>Login</title>
 </head>
@@ -21,13 +21,12 @@
     <div class="container">
         <h1>EXPENSE TRACKER</h1>
         <h2>Welcome back</h2>
-        <form id="login-form" action="/user/login" method="post" novalidate>
+        <form id="login-form" novalidate>
             <div class="mb-3">
-                <input class="form-control" type="email" id="email" name="email" placeholder="Email" required>
+                <input class="form-control" type="email" id="email" name="email" placeholder="Email">
             </div>
             <div class="mb-3">
-                <input class="form-control" type="password" id="password" name="password" placeholder="Password"
-                    required>
+                <input class="form-control" type="password" id="password" name="password" placeholder="Password">
             </div>
             <div class="error-message text-danger" id="error"></div>
             <a href="/password/forgot-password-page">Forgot password?</a>
@@ -45,7 +44,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <!-- link to js file -->
-    <script src="../js/login.js" defer></script>
+    <script src="/js/login.js" defer></script>
 </body>
 
 </html>
