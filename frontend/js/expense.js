@@ -1,5 +1,4 @@
 const form = document.getElementById("expense-form");
-const tableBody = document.getElementById("expense-list");
 const error = document.getElementById("error");
 const premiumButton = document.getElementById("premium");
 const homeButton = document.getElementById("home");
@@ -87,6 +86,7 @@ async function addExpense(e) {
 }
 
 function showOnScreen(expense) {
+    const tableBody = document.getElementById("expense-list");
     const tableRow = document.createElement("tr");
     tableRow.innerHTML = `
     <td>${expense.date}</td>
@@ -113,6 +113,7 @@ function showOnScreen(expense) {
 
 async function deleteExpense(expense, expenseId, tableRow) {
     try {
+        const tableBody = document.getElementById("expense-list");
         const token = localStorage.getItem("token");
         const res = await axios.delete(`http://localhost:3000/expense/expense-delete/${expenseId}`, {
             headers: {
@@ -183,7 +184,7 @@ async function updateExpense(expense, expenseId, tableRow) {
                         </td>`;
                     const deleteButton = tableRow.querySelector(".delete-button");
                     const editButton = tableRow.querySelector(".edit-button");
-                    
+
                     deleteButton.addEventListener("click", function () {
                         deleteExpense(expense, expenseId, tableRow);
                     });
