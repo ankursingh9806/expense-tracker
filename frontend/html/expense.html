@@ -11,7 +11,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <!-- link to css file -->
-    <link href="../css/expense.css" rel="stylesheet">
+    <link href="/css/expense.css" rel="stylesheet">
 
     <title>Expense</title>
 </head>
@@ -42,20 +42,20 @@
 
     <!-- expense form -->
     <div class="container">
-        <form id="expense-form" action="/expense/expense-add" method="post" novalidate>
+        <form id="expense-form" novalidate>
             <div class="row">
                 <div class="col">
-                    <input class="form-control" type="date" id="date" name="date" placeholder="Date" required>
+                    <input class="form-control" type="date" id="date" name="date" placeholder="Date">
                 </div>
                 <div class="col">
-                    <input class="form-control" type="number" id="amount" name="amount" placeholder="Amount" required>
+                    <input class="form-control" type="number" id="amount" name="amount" placeholder="Amount">
                 </div>
                 <div class="col">
                     <input class="form-control" type="text" id="description" name="description"
-                        placeholder="Description" required>
+                        placeholder="Description">
                 </div>
                 <div class="col">
-                    <select class="form-select" id="category" name="category" required>
+                    <select class="form-select" id="category" name="category">
                         <option value="" selected disabled>Category</option>
                         <option value="Housing">Housing</option>
                         <option value="Utilities">Utilities</option>
@@ -106,7 +106,7 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <!-- link to js file -->
-    <script src="../js/expense.js" defer></script>
+    <script src="/js/expense.js" defer></script>
 </body>
 
 </html>
