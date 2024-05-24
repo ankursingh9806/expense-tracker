@@ -47,6 +47,11 @@ body {
     background-color: #212529;
 }
 
+#logo {
+    color:orange;
+    font-weight: bold;
+}
+
 .table {
     background-color: #454d55;
 }
