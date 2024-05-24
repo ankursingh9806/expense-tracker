@@ -48,7 +48,7 @@ body {
 }
 
 #logo {
-    color:orange;
+    color: orange;
     font-weight: bold;
 }
 
@@ -100,4 +100,11 @@ td:nth-child(5) {
 .table th:last-child {
     border-top-right-radius: 7px;
     border-bottom-right-radius: 7px;
+}
+
+caption {
+    caption-side: top;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: white;
 }
