@@ -25,16 +25,12 @@ h2 {
 }
 
 .navbar {
-    background-color: #212529;
+    background-color: #454d55;
 }
 
 #logo {
     color: orange;
     font-weight: bold;
-}
-
-.table {
-    background-color: #454d55;
 }
 
 .table th {
