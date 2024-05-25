@@ -13,6 +13,7 @@ const expenseRoute = require("./routes/expenseRoute");
 const purchaseRoute = require("./routes/purchaseRoute");
 const leaderboardRoute = require("./routes/leaderboardRoute");
 const resetPasswordRoute = require("./routes/resetPasswordRoute");
+const reportRoute = require("./routes/reportRoute");
 
 const User = require("./models/userModel")
 const Expense = require("./models/expenseModel")
@@ -28,6 +29,7 @@ app.use("/user", userRoute);
 app.use("/expense", expenseRoute);
 app.use("/purchase", purchaseRoute);
 app.use("/premium", leaderboardRoute);
+app.use("/premium", reportRoute);
 app.use("/password", resetPasswordRoute);
 
 User.hasMany(Expense);
