@@ -21,7 +21,7 @@
     <!-- nav bar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#" id="logo">Expense Tracker</a>
+            <a class="navbar-brand" href="#" id="logo">ExpenseTracker</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -34,7 +34,7 @@
                 </div>
                 <a class="nav-link" href="#" id="premium">Buy Premium 👑</a>
                 <form class="d-flex">
-                    <button class="btn btn-secondary" type="submit" id="logout-button">Logout</button>
+                    <button class="btn btn-danger bg-gradient" type="submit" id="logout-button">Logout</button>
                 </form>
             </div>
         </div>
@@ -71,7 +71,7 @@
                     </select>
                 </div>
                 <div class="col">
-                    <button class="btn btn-dark" type="submit" id="submit-button">Add Expense</button>
+                    <button class="btn btn-secondary" type="submit" id="submit-button">Add Expense</button>
                 </div>
                 <div class="error-message text-danger" id="error"></div>
             </div>
@@ -81,14 +81,14 @@
     <!-- expense table -->
     <div class="container-fluid">
         <table class="table table-borderless table-sm table-hover">
-            <caption id="total-amount">Your Expenses</caption>
+            <caption>Your Expenses</caption>
             <thead>
                 <tr>
                     <th scope="col">Date</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Description</th>
                     <th scope="col">Category</th>
-                    <th scope="col"></th>
+                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody id="expense-list"></tbody>
