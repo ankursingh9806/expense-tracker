@@ -1,106 +1,88 @@
+/* containers */
 .container {
     margin: 20px auto;
     max-width: 800px;
     border-radius: 10px;
     padding: 20px;
-    background-color: #454d55;
+    background-color: #354152;
 }
 
 .container-fluid:nth-of-type(2) {
     max-width: 800px;
     border-radius: 10px;
     padding: 20px;
-    background-color: #454d55;
+    background-color: #354152;
 }
 
+/* body */
 body {
-    background-color: #343a40;
+    background-color: #2c303a;
+}
+
+/* form */
+.form-control,
+.form-select {
+    margin-top: 10px;
 }
 
 #submit-button {
     width: 100%;
+    margin-top: 10px;
+    white-space: nowrap;
+}
+
+.error-message {
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+/* nav bar */
+#premium {
+    margin-right: 30px;
+    color: white;
+}
+
+.navbar {
+    background-color: #354152;
+}
+
+#logo {
+    color: #198754;
+    font-weight: bold;
 }
 
 #logout-button {
     width: auto;
 }
 
-.btn-sm {
-    width: 40%;
-    padding: .1px;
-    border: none;
-    background-color: #212529;
-    color: white;
-}
-
-#premium {
-    margin-right: 30px;
-    color: white;
-}
-
-.error-message {
-    font-size: small;
-    margin-top: 10px;
-}
-
-.navbar {
-    background-color: #454d55;
-}
-
-#logo {
-    color: orange;
-    font-weight: bold;
+/* table */
+.table {
+    border-collapse: separate;
+    border-spacing: 0 5px;
 }
 
 .table th {
-    background-color: #343a40;
-    color: white;
+    background-color: #2c303a;
+    color: #7e8ba3;
+    width: 150px;
 }
 
 .table td {
-    background-color: #454d55;
+    background-color: #2c303a;
     color: white;
-}
-
-th:nth-child(1),
-td:nth-child(1) {
-    width: 20%;
-}
-
-th:nth-child(2),
-td:nth-child(2) {
-    width: 20%;
-}
-
-th:nth-child(3),
-td:nth-child(3) {
-    width: 20%;
-}
-
-th:nth-child(4),
-td:nth-child(4) {
-    width: 20%;
-}
-
-th:nth-child(5),
-td:nth-child(5) {
-    width: 20%;
-    text-align: right;
-}
-
-.table th:first-child {
-    border-top-left-radius: 7px;
-    border-bottom-left-radius: 7px;
-}
-
-.table th:last-child {
-    border-top-right-radius: 7px;
-    border-bottom-right-radius: 7px;
+    width: 150px;
 }
 
 caption {
     caption-side: top;
     font-weight: bold;
     margin-bottom: 10px;
-    color: white;
+    color: #7e8ba3;
+}
+
+.delete-button,
+.edit-button {
+    padding: .1px;
+    margin-bottom: 1px;
+    width: 50px;
 }
