@@ -19,7 +19,7 @@ async function forgotPassword(e) {
             error.textContent = "";
             document.querySelector("#email").remove();
             document.querySelector("button[type='submit']").remove();
-            document.querySelector("h3").innerHTML = `<h3 style='text-align: center;'>We have sent you an email. Please check your email <b>${email}</b> to reset your password</h3>`
+            document.querySelector("h3").innerHTML = `<h3 style='text-align: center;'>We have sent you an email. Please check your email <span style='color: #198754;'>${email}</span> to reset your password</h3>`
         } else {
             error.textContent = "Email not sent. Please try again later."
         }
