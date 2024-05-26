@@ -3,7 +3,7 @@
     "express": "^4.19.2"
   },
   "dependencies": {
-    "aws-sdk": "^2.1626.0",
+    "aws-sdk": "^2.1628.0",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
