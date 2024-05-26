@@ -33,8 +33,7 @@ const dailyReportDownload = async (req, res, next) => {
             where: { date: date, UserId: req.user.id }
         });
         const expensesToString = JSON.stringify(expenses);
-        const formattedDate = new Date().toISOString().split('T')[0];
-        const fileName = `expense-${formattedDate}.csv`;
+        const fileName = `expense-${date}.csv`;
         const fileUrl = await s3services.uploadToS3(expensesToString, fileName);
         res.status(200).json({ fileUrl: fileUrl.Location, success: true, message: "daily report downloaded" });
     } catch (err) {
@@ -74,8 +73,7 @@ const monthlyReportDownload = async (req, res, next) => {
             }
         });
         const expensesToString = JSON.stringify(expenses);
-        const formattedDate = new Date().toISOString().split('T')[0];
-        const fileName = `expense-${formattedDate}.csv`;
+        const fileName = `expense-${month}.csv`;
         const fileUrl = await s3services.uploadToS3(expensesToString, fileName);
         res.status(200).json({ fileUrl: fileUrl.Location, success: true, message: "monthly report downloaded" });
     } catch (err) {
