@@ -14,8 +14,19 @@ const expensePage = async (req, res, next) => {
 
 const fetchExpense = async (req, res, next) => {
     try {
-        const expenses = await Expense.findAll({ where: { UserId: req.user.id } });
-        res.status(200).json({ expenses, success: true, message: "expenses fetched" });
+        const page = req.query.page;
+        const limit = 5;
+        const offset = (page - 1) * limit;
+        const totalExpenses = await Expense.count({
+            where: { UserId: req.user.id }
+        });
+        const expenses = await Expense.findAndCountAll({
+            where: { UserId: req.user.id },
+            limit: limit,
+            offset: offset
+        });
+        const totalPages = Math.ceil(totalExpenses / limit);
+        res.status(200).json({ expenses, totalPages, success: true, message: "expenses fetched" });
     } catch (err) {
         console.error("error fetching expenses:", err);
         res.status(500).json({ success: false, error: "internal server error" });
