@@ -7,7 +7,7 @@ const leaderboardButton = document.getElementById("leaderboard");
 const reportButton = document.getElementById("report");
 const logoutButton = document.getElementById("logout-button");
 
-document.addEventListener("DOMContentLoaded", fetchExpense);
+document.addEventListener("DOMContentLoaded", fetchExpense());
 document.addEventListener("DOMContentLoaded", isPremiumUser);
 form.addEventListener("submit", addExpense);
 logoutButton.addEventListener("click", logout);
@@ -28,24 +28,51 @@ function showConfirm(e) {
     }
 };
 
-async function fetchExpense() {
+async function fetchExpense(page = 1) {
     try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:3000/expense/expense-fetch", {
+        const res = await axios.get(`http://localhost:3000/expense/expense-fetch?page=${page}`, {
             headers: {
                 Authorization: token
             }
         });
         if (res.status === 200) {
-            res.data.expenses.forEach((expense) => {
+            const tableBody = document.getElementById("expense-list");
+            tableBody.innerHTML = "";
+            res.data.expenses.rows.forEach((expense) => {
                 showOnScreen(expense);
             });
+            updatePagination(res.data.totalPages, page);
         } else {
             alert("Failed to load expenses");
         }
     } catch (err) {
         console.error("failed to load expenses from database:", err);
     }
+}
+
+function updatePagination(totalPages) {
+    const ul = document.getElementById("page-item");
+    ul.innerHTML = "";
+    for (let i = 1; i <= totalPages; i++) {
+        const li = document.createElement("li");
+        li.className = "page-item"
+        const a = document.createElement("a");
+        a.className = "page-link";
+        a.href = "#";
+        a.textContent = i;
+        a.addEventListener('click', (e) => {
+            e.preventDefault();
+            fetchExpense(i);
+        });
+        li.appendChild(a);
+        ul.appendChild(li);
+    }
+}
+
+async function paginationBtn(e, page) {
+    e.preventDefault();
+    await fetchExpense(page);
 }
 
 const date = new Date();
@@ -77,6 +104,7 @@ async function addExpense(e) {
             showOnScreen(res.data.newExpense);
             form.reset();
             error.textContent = "";
+            await fetchExpense();
         } else {
             error.textContent = "Expense not added. Please try again.";
         }
@@ -122,6 +150,7 @@ async function deleteExpense(expense, expenseId, tableRow) {
         });
         if (res.status === 200) {
             tableBody.removeChild(tableRow);
+            await fetchExpense();
         } else {
             error.textContent = "Failed to delete expense. Please try again.";
         }
