@@ -31,10 +31,6 @@ app.use("/purchase", purchaseRoute);
 app.use("/premium", leaderboardRoute);
 app.use("/premium", reportRoute);
 app.use("/password", resetPasswordRoute);
-
-app.use((req, res) => {
-    res.sendFile(path.join(__dirname, "..", "frontend", "html", "login.html"));
-})
  
 User.hasMany(Expense);
 Expense.belongsTo(User);
