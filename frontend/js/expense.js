@@ -31,7 +31,7 @@ function showConfirm(e) {
 async function fetchExpense(page = 1) {
     try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`http://localhost:3000/expense/expense-fetch?page=${page}`, {
+        const res = await axios.get(`http://13.211.144.61:3000/expense/expense-fetch?page=${page}`, {
             headers: {
                 Authorization: token
             }
@@ -95,7 +95,7 @@ async function addExpense(e) {
             return;
         }
         const token = localStorage.getItem("token");
-        const res = await axios.post("http://localhost:3000/expense/expense-add", expenseData, {
+        const res = await axios.post("http://13.211.144.61:3000/expense/expense-add", expenseData, {
             headers: {
                 Authorization: token
             }
@@ -143,7 +143,7 @@ async function deleteExpense(expense, expenseId, tableRow) {
     try {
         const tableBody = document.getElementById("expense-list");
         const token = localStorage.getItem("token");
-        const res = await axios.delete(`http://localhost:3000/expense/expense-delete/${expenseId}`, {
+        const res = await axios.delete(`http://13.211.144.61:3000/expense/expense-delete/${expenseId}`, {
             headers: {
                 Authorization: token
             }
@@ -191,7 +191,7 @@ async function updateExpense(expense, expenseId, tableRow) {
                     return;
                 }
                 const token = localStorage.getItem("token");
-                const res = await axios.put(`http://localhost:3000/expense/expense-update/${expenseId}`, updatedExpenseData, {
+                const res = await axios.put(`http://13.211.144.61:3000/expense/expense-update/${expenseId}`, updatedExpenseData, {
                     headers: {
                         Authorization: token
                     }
@@ -238,7 +238,7 @@ async function updateExpense(expense, expenseId, tableRow) {
 
 async function logout() {
     try {
-        const res = await axios.post("http://localhost:3000/user/logout");
+        const res = await axios.post("http://13.211.144.61:3000/user/logout");
         if (res.status === 200) {
             localStorage.removeItem("token");
             window.location.href = "../html/login.html";
@@ -254,7 +254,7 @@ async function purchasePremium(e) {
     try {
         e.preventDefault();
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:3000/purchase/purchase-premium", {
+        const res = await axios.get("http://13.211.144.61:3000/purchase/purchase-premium", {
             headers: {
                 Authorization: token
             }
@@ -264,7 +264,7 @@ async function purchasePremium(e) {
             "order_id": res.data.order.id,
             "handler": async function (response) {
                 try {
-                    const res = await axios.post("http://localhost:3000/purchase/update-transaction-status", {
+                    const res = await axios.post("http://13.211.144.61:3000/purchase/update-transaction-status", {
                         order_id: options.order_id,
                         payment_id: response.razorpay_payment_id,
                     }, {
@@ -295,7 +295,7 @@ async function purchasePremium(e) {
 async function isPremiumUser() {
     try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:3000/user/is-premium-user", {
+        const res = await axios.get("http://13.211.144.61:3000/user/is-premium-user", {
             headers: {
                 Authorization: token
             },
