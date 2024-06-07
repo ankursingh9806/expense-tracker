@@ -44,7 +44,7 @@ Order.belongsTo(User);
 
 User.hasMany(ResetPassword);
 ResetPassword.belongsTo(User);
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 sequelize
     //.sync({ force: true })
     .sync()
