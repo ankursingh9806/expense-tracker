@@ -46,7 +46,7 @@ User.hasMany(ResetPassword);
 ResetPassword.belongsTo(User);
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 sequelize
-    //.sync({ force: true })
+    //.sync()
     .sync()
     .then((result) => {
         app.listen(3000);
