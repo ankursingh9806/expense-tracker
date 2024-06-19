@@ -1,6 +1,8 @@
 const form = document.getElementById("forgot-password-form");
 const error = document.getElementById("error");
 
+const ip = "3.25.84.40";
+
 form.addEventListener("submit", forgotPassword);
 
 async function forgotPassword(e) {
@@ -14,7 +16,7 @@ async function forgotPassword(e) {
             error.innerHTML = "Please enter your email.";
             return;
         }
-        const res = await axios.post("http://13.211.144.61:3000/password/forgot-password", forgotPasswordDetail);
+        const res = await axios.post("http://${ip}:3000/password/forgot-password", forgotPasswordDetail);
         if (res.status === 200) {
             error.textContent = "";
             document.querySelector("#email").remove();

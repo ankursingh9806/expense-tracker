@@ -1,6 +1,8 @@
 const form = document.getElementById("reset-password-form");
 const error = document.getElementById("error");
 
+const ip = "3.25.84.40";
+
 form.addEventListener("submit", resetPassword);
 
 const resetId = window.location.pathname.split("/").pop();
@@ -16,7 +18,7 @@ async function resetPassword(e) {
             error.textContent = "Please enter your new password.";
             return;
         }
-        const res = await axios.post(`http://13.211.144.61:3000/password/reset-password/${resetId}`, newPasswordDetail);
+        const res = await axios.post(`http://${ip}:3000/password/reset-password/${resetId}`, newPasswordDetail);
         if (res.status === 200) {
             error.textContent = "";
             document.querySelector("#password").remove();
