@@ -16,7 +16,7 @@ async function forgotPassword(e) {
             error.innerHTML = "Please enter your email.";
             return;
         }
-        const res = await axios.post("http://${ip}:3000/password/forgot-password", forgotPasswordDetail);
+        const res = await axios.post(`http://${ip}:3000/password/forgot-password`, forgotPasswordDetail);
         if (res.status === 200) {
             error.textContent = "";
             document.querySelector("#email").remove();

@@ -97,7 +97,7 @@ async function addExpense(e) {
             return;
         }
         const token = localStorage.getItem("token");
-        const res = await axios.post("http://${ip}:3000/expense/expense-add", expenseData, {
+        const res = await axios.post(`http://${ip}:3000/expense/expense-add`, expenseData, {
             headers: {
                 Authorization: token
             }
@@ -240,7 +240,7 @@ async function updateExpense(expense, expenseId, tableRow) {
 
 async function logout() {
     try {
-        const res = await axios.post("http://${ip}:3000/user/logout");
+        const res = await axios.post(`http://${ip}:3000/user/logout`);
         if (res.status === 200) {
             localStorage.removeItem("token");
             window.location.href = "../html/login.html";
@@ -256,7 +256,7 @@ async function purchasePremium(e) {
     try {
         e.preventDefault();
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://${ip}:3000/purchase/purchase-premium", {
+        const res = await axios.get(`http://${ip}:3000/purchase/purchase-premium`, {
             headers: {
                 Authorization: token
             }
@@ -266,7 +266,7 @@ async function purchasePremium(e) {
             "order_id": res.data.order.id,
             "handler": async function (response) {
                 try {
-                    const res = await axios.post("http://${ip}:3000/purchase/update-transaction-status", {
+                    const res = await axios.post(`http://${ip}:3000/purchase/update-transaction-status`, {
                         order_id: options.order_id,
                         payment_id: response.razorpay_payment_id,
                     }, {
@@ -297,7 +297,7 @@ async function purchasePremium(e) {
 async function isPremiumUser() {
     try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://${ip}:3000/user/is-premium-user", {
+        const res = await axios.get(`http://${ip}:3000/user/is-premium-user`, {
             headers: {
                 Authorization: token
             },

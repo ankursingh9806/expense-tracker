@@ -27,7 +27,7 @@ reportButton.addEventListener("click", function () {
 
 async function logout() {
     try {
-        const res = await axios.post("http://${ip}:3000/user/logout");
+        const res = await axios.post(`http://${ip}:3000/user/logout`);
         if (res.status === 200) {
             localStorage.removeItem("token");
             window.location.href = "../html/login.html";
@@ -41,7 +41,7 @@ async function logout() {
 
 async function leaderboardShow() {
     try {
-        const res = await axios.get("http://${ip}:3000/premium/leaderboard-show");
+        const res = await axios.get(`http://${ip}:3000/premium/leaderboard-show`);
         if (res.status === 200) {
             let position = 1;
             res.data.userLeaderboard.forEach((users) => {
