@@ -4,6 +4,8 @@ const leaderboardButton = document.getElementById("leaderboard");
 const reportButton = document.getElementById("report");
 const logoutButton = document.getElementById("logout-button");
 
+const ip = "3.25.84.40";
+
 logoutButton.addEventListener("click", logout);
 
 homeButton.addEventListener("click", function () {
@@ -24,7 +26,7 @@ reportButton.addEventListener("click", function () {
 
 async function logout() {
     try {
-        const res = await axios.post("http://13.211.144.61:3000:3000/user/logout");
+        const res = await axios.post("http://${ip}:3000/user/logout");
         if (res.status === 200) {
             localStorage.removeItem("token");
             window.location.href = "../html/login.html";
@@ -57,7 +59,7 @@ async function dailyReportView(e) {
             date: dateInput.value,
         };
         const token = localStorage.getItem("token");
-        const res = await axios.post("http://13.211.144.61:3000:3000/premium/daily-report-view", reportData, {
+        const res = await axios.post("http://${ip}:3000/premium/daily-report-view", reportData, {
             headers: {
                 Authorization: token
             }
@@ -100,7 +102,7 @@ async function dailyReportDownload(e) {
             date: dateInput.value,
         };
         const token = localStorage.getItem("token");
-        const res = await axios.post("http://13.211.144.61:3000:3000/premium/daily-report-download", reportData, {
+        const res = await axios.post("http://${ip}:3000/premium/daily-report-download", reportData, {
             headers: {
                 Authorization: token
             }
@@ -138,7 +140,7 @@ async function monthlyReportView(e) {
         };
         console.log(reportData);
         const token = localStorage.getItem("token");
-        const res = await axios.post("http://13.211.144.61:3000:3000/premium/monthly-report-view", reportData, {
+        const res = await axios.post("http://${ip}:3000/premium/monthly-report-view", reportData, {
             headers: {
                 Authorization: token
             }
@@ -181,7 +183,7 @@ async function monthlyReportDownload(e) {
             month: dateInput.value,
         };
         const token = localStorage.getItem("token");
-        const res = await axios.post("http://13.211.144.61:3000:3000/premium/monthly-report-download", reportData, {
+        const res = await axios.post("http://${ip}:3000/premium/monthly-report-download", reportData, {
             headers: {
                 Authorization: token
             }

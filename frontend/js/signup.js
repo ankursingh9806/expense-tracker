@@ -1,6 +1,8 @@
 const form = document.getElementById("signup-form");
 const error = document.getElementById("error");
 
+const ip = "3.25.84.40";
+
 form.addEventListener("submit", signup);
 
 async function signup(e) {
@@ -18,7 +20,7 @@ async function signup(e) {
             error.textContent = "Please fill out all fields.";
             return;
         }
-        const res = await axios.post("http://13.211.144.61:3000:3000/user/signup", signupDetails);
+        const res = await axios.post("http://${ip}:3000/user/signup", signupDetails);
         if (res.status === 201) {
             alert("Signup successfull! Please login to continue.")
             window.location.href = "../html/login.html";

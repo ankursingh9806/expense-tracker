@@ -36,6 +36,10 @@ app.use((req, res) => {
     res.sendFile(path.join(__dirname, "..", "frontend", "html", "login.html"));
 })
 
+app.use((req, res) => {
+    res.sendFile(path.join(__dirname, "..", "frontend", "html", "login.html"));
+})
+
 User.hasMany(Expense);
 Expense.belongsTo(User);
 

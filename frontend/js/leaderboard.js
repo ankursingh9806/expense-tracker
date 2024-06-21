@@ -4,6 +4,8 @@ const leaderboardButton = document.getElementById("leaderboard");
 const reportButton = document.getElementById("report");
 const logoutButton = document.getElementById("logout-button");
 
+const ip = "3.25.84.40";
+
 logoutButton.addEventListener("click", logout);
 document.addEventListener("DOMContentLoaded", leaderboardShow);
 
@@ -25,7 +27,7 @@ reportButton.addEventListener("click", function () {
 
 async function logout() {
     try {
-        const res = await axios.post("http://13.211.144.61:3000:3000/user/logout");
+        const res = await axios.post("http://${ip}:3000/user/logout");
         if (res.status === 200) {
             localStorage.removeItem("token");
             window.location.href = "../html/login.html";
@@ -39,7 +41,7 @@ async function logout() {
 
 async function leaderboardShow() {
     try {
-        const res = await axios.get("http://13.211.144.61:3000:3000/premium/leaderboard-show");
+        const res = await axios.get("http://${ip}:3000/premium/leaderboard-show");
         if (res.status === 200) {
             let position = 1;
             res.data.userLeaderboard.forEach((users) => {

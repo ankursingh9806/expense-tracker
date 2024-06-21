@@ -1,6 +1,8 @@
 const form = document.getElementById("login-form");
 const error = document.getElementById("error");
 
+const ip = "3.25.84.40";
+
 form.addEventListener("submit", login);
 
 async function login(e) {
@@ -16,7 +18,7 @@ async function login(e) {
             error.textContent = "Please fill out all fields.";
             return;
         }
-        const res = await axios.post("http://13.211.144.61:3000:3000/user/login", loginDetails);
+        const res = await axios.post("http://${ip}:3000/user/login", loginDetails);
         if (res.status === 200) {
             localStorage.setItem("token", res.data.token);
             window.location.href = "../html/expense.html";
