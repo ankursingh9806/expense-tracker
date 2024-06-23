@@ -4,16 +4,7 @@ const express = require("express");
 const app = express();
 
 const helmet = require("helmet");
-app.use(helmet({
-    contentSecurityPolicy: {
-        directives: {
-            defaultSrc: ["'self'"],
-            styleSrc: ["'self'", "cdn.jsdelivr.net", "'unsafe-inline'"],
-            scriptSrc: ["'self'", "cdn.jsdelivr.net", "checkout.razorpay.com"],
-            frameSrc: ["'self'", "api.razorpay.com"],
-        },
-    },
-}));
+app.use(helmet());
 
 const path = require("path");
 const fs = require("fs");
