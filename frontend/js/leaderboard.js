@@ -4,7 +4,7 @@ const leaderboardButton = document.getElementById("leaderboard");
 const reportButton = document.getElementById("report");
 const logoutButton = document.getElementById("logout-button");
 
-const ip = "3.25.84.40";
+const ip = "13.236.1.191";
 
 logoutButton.addEventListener("click", logout);
 document.addEventListener("DOMContentLoaded", leaderboardShow);

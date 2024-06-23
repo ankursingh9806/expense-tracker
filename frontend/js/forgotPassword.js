@@ -1,7 +1,7 @@
 const form = document.getElementById("forgot-password-form");
 const error = document.getElementById("error");
 
-const ip = "3.25.84.40";
+const ip = "13.236.1.191";
 
 form.addEventListener("submit", forgotPassword);
 
