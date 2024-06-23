@@ -1,7 +1,7 @@
 const form = document.getElementById("login-form");
 const error = document.getElementById("error");
 
-const ip = "13.236.1.191";
+const ip = "54.252.112.94";
 
 form.addEventListener("submit", login);
 

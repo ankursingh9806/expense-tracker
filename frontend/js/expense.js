@@ -7,7 +7,7 @@ const leaderboardButton = document.getElementById("leaderboard");
 const reportButton = document.getElementById("report");
 const logoutButton = document.getElementById("logout-button");
 
-const ip = "13.236.1.191";
+const ip = "54.252.112.94";
 
 document.addEventListener("DOMContentLoaded", fetchExpense());
 document.addEventListener("DOMContentLoaded", isPremiumUser);
