@@ -3,9 +3,26 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 
+const helmet = require("helmet");
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            styleSrc: ["'self'", "cdn.jsdelivr.net", "'unsafe-inline'"],
+            scriptSrc: ["'self'", "cdn.jsdelivr.net", "checkout.razorpay.com"],
+            frameSrc: ["'self'", "api.razorpay.com"],
+        },
+    },
+}));
+
 const path = require("path");
+const fs = require("fs");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+
+const accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), { file: "a" })
+const morgan = require("morgan");
+app.use(morgan("combined", { stream: accessLogStream }));
 
 const sequelize = require("./utils/database");
 const userRoute = require("./routes/userRoute");
@@ -31,7 +48,7 @@ app.use("/purchase", purchaseRoute);
 app.use("/premium", leaderboardRoute);
 app.use("/premium", reportRoute);
 app.use("/password", resetPasswordRoute);
- 
+
 app.use((req, res) => {
     res.sendFile(path.join(__dirname, "..", "frontend", "html", "login.html"));
 })
