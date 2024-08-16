@@ -26,8 +26,10 @@ app.use(helmet({
 }));
 
 app.use(express.static(path.join(__dirname, "..", "frontend")));
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 app.use(cors({
     origin: "http://localhost:3000",
     credentials: true,
@@ -68,12 +70,14 @@ User.hasMany(ResetPassword);
 ResetPassword.belongsTo(User);
 
 sequelize
-    //.sync({ force: true })
+    // .sync({ force: true })
     .sync()
-    .then((result) => {
-        app.listen(3000);
-        console.log("server is synced with database");
+    .then(() => {
+        app.listen(3000, () => {
+            console.log("Node.js application is connected to MySQL");
+            console.log("Server is running on port 3000");
+        });
     })
     .catch((err) => {
-        console.error("server is unable to sync with database:", err);
+        console.error("Error connecting to MySQL:", err);
     });

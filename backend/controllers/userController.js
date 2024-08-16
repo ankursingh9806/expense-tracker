@@ -16,8 +16,8 @@ const signupPage = async (req, res, next) => {
     try {
         res.sendFile(path.join(__dirname, "..", "..", "frontend", "html", "signup.html"));
     } catch (err) {
-        console.error("error getting signup page", err);
-        res.status(500).json({ success: false, error: "internal server error" });
+        console.error("error:", err);
+        res.status(500).json({ error: "internal server error" });
     }
 };
 
@@ -25,8 +25,8 @@ const loginPage = async (req, res, next) => {
     try {
         res.sendFile(path.join(__dirname, "..", "..", "frontend", "html", "login.html"));
     } catch (err) {
-        console.error("error getting login page", err);
-        res.status(500).json({ success: false, error: "internal server error" });
+        console.error("error:", err);
+        res.status(500).json({ error: "internal server error" });
     }
 };
 
@@ -35,20 +35,19 @@ const signup = async (req, res, next) => {
         const { name, email, password } = req.body;
         const existingUser = await User.findOne({ where: { email: email } });
         if (existingUser) {
-            return res.status(409).json({ success: false, message: "user already exists" });
+            return res.status(409).json({ message: "user already exists" });
         }
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
-        const newUser = await User.create({
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = {
             name: name,
             email: email,
-            // password: password
             password: hashedPassword
-        });
-        res.status(201).json({ success: true, message: "user signed up" });
+        };
+        await User.create(newUser);
+        res.status(201).json({ message: "user signed up" });
     } catch (err) {
-        console.error("error in signup:", err);
-        res.status(500).json({ success: false, error: "internal server error" });
+        console.error("error:", err);
+        res.status(500).json({ error: "internal server error" });
     }
 }
 
@@ -57,29 +56,26 @@ const login = async (req, res, next) => {
         const { email, password } = req.body;
         const existingUser = await User.findOne({ where: { email: email } });
         if (!existingUser) {
-            return res.status(404).json({ success: false, message: "user not found" });
+            return res.status(404).json({ message: "user not found" });
         }
-        // if (existingUser.password !== password) {
-        //     return res.status(401).json({ success: false, message: "incorrect password" });
-        // }
         const isPasswordValid = await bcrypt.compare(password, existingUser.password);
         if (!isPasswordValid) {
             return res.status(401).json({ message: "incorrect password" });
         }
         const token = generateAccessToken(existingUser.id, existingUser.email);
-        res.status(200).json({ success: true, message: "user logged in", token: token });
+        res.status(200).json({ message: "user logged in", token: token });
     } catch (err) {
-        console.error("error in login:", err);
-        res.status(500).json({ success: false, error: "internal server error" });
+        console.error("error:", err);
+        res.status(500).json({ error: "internal server error" });
     }
 }
 
 const logout = async (req, res, next) => {
     try {
-        res.status(200).json({ success: true, message: "user logged out" });
+        res.status(200).json({ message: "user logged out" });
     } catch (err) {
-        console.error("error in logout:", err);
-        res.status(500).json({ success: false, error: "internal server error" });
+        console.error("error:", err);
+        res.status(500).json({ error: "internal server error" });
     }
 }
 
@@ -91,8 +87,8 @@ const isPremiumUser = async (req, res, next) => {
             return res.json({ isPremiumUser: false });
         }
     } catch (err) {
-        console.error("error checking premium user status:", err);
-        res.status(500).json({ success: false, error: "internal server error" });
+        console.error("error:", err);
+        res.status(500).json({ error: "internal server error" });
     }
 };
 
