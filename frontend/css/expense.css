@@ -86,16 +86,3 @@ caption {
     margin-bottom: 1px;
     width: 50px;
 }
-
-/* pagination */
-.page-item .page-link {
-    color: white;
-    background-color: #2c303a;
-    border-color: #2c303a;
-    cursor: pointer;
-}
-
-.page-item .page-link:hover {
-    background-color: #6c757d;
-    border-color: #6c757d;
-}
