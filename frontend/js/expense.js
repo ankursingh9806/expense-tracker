@@ -28,6 +28,7 @@ function showConfirm(e) {
     }
 };
 
+let currentPage = 1;
 async function fetchExpense(page = 1) {
     try {
         const token = localStorage.getItem("token");
@@ -41,38 +42,32 @@ async function fetchExpense(page = 1) {
             tableBody.innerHTML = "";
             res.data.expenses.rows.forEach((expense) => {
                 showOnScreen(expense);
+                currentPage = page;
             });
-            updatePagination(res.data.totalPages, page);
+            updatePagination(res.data.totalPages);
         } else {
             alert("Failed to load expenses");
         }
     } catch (err) {
-        console.error("failed to load expenses from database:", err);
+        console.error("Failed to load expenses from database:", err);
     }
 }
 
 function updatePagination(totalPages) {
-    const ul = document.getElementById("page-item");
-    ul.innerHTML = "";
+    const expenseList = document.getElementById("page-item");
+    expenseList.innerHTML = "";
     for (let i = 1; i <= totalPages; i++) {
-        const li = document.createElement("li");
-        li.className = "page-item"
-        const a = document.createElement("a");
-        a.className = "page-link";
-        a.href = "#";
-        a.textContent = i;
-        a.addEventListener('click', (e) => {
-            e.preventDefault();
+        const pageButton = document.createElement("button");
+        pageButton.classList.add("btn", "btn-secondary", "btn-sm", "mx-1");
+        pageButton.textContent = i;
+        if (i === currentPage) {
+            pageButton.disabled = true;
+        }
+        pageButton.addEventListener('click', () => {
             fetchExpense(i);
         });
-        li.appendChild(a);
-        ul.appendChild(li);
+        expenseList.appendChild(pageButton);
     }
-}
-
-async function paginationBtn(e, page) {
-    e.preventDefault();
-    await fetchExpense(page);
 }
 
 const date = new Date();

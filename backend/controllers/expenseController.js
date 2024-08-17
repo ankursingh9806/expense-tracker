@@ -14,7 +14,7 @@ const expensePage = async (req, res, next) => {
 
 const fetchExpense = async (req, res, next) => {
     try {
-        const { page } = req.query;
+        const { page = 1 } = req.query;
         const limit = 5;
         const offset = (page - 1) * limit;
         const totalExpenses = await Expense.count({
