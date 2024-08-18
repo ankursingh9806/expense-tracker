@@ -36,7 +36,8 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE"],
 }))
 
-const sequelize = require("./utils/database");
+// const sequelize = require("./utils/database");
+const mongoose = require("./utils//database");
 const userRoute = require("./routes/userRoute");
 const expenseRoute = require("./routes/expenseRoute");
 const purchaseRoute = require("./routes/purchaseRoute");
@@ -44,10 +45,10 @@ const leaderboardRoute = require("./routes/leaderboardRoute");
 const resetPasswordRoute = require("./routes/resetPasswordRoute");
 const reportRoute = require("./routes/reportRoute");
 
-const User = require("./models/userModel")
-const Expense = require("./models/expenseModel")
-const Order = require("./models/orderModel");
-const ResetPassword = require("./models/resetPasswordModel");
+// const User = require("./models/userModel")
+// const Expense = require("./models/expenseModel")
+// const Order = require("./models/orderModel");
+// const ResetPassword = require("./models/resetPasswordModel");
 
 app.use("/user", userRoute);
 app.use("/expense", expenseRoute);
@@ -60,24 +61,31 @@ app.use((req, res) => {
     res.sendFile(path.join(__dirname, "..", "frontend", "html", "login.html"));
 })
 
-User.hasMany(Expense);
-Expense.belongsTo(User);
+// User.hasMany(Expense);
+// Expense.belongsTo(User);
 
-User.hasMany(Order);
-Order.belongsTo(User);
+// User.hasMany(Order);
+// Order.belongsTo(User);
 
-User.hasMany(ResetPassword);
-ResetPassword.belongsTo(User);
+// User.hasMany(ResetPassword);
+// ResetPassword.belongsTo(User);
 
-sequelize
-    // .sync({ force: true })
-    .sync()
-    .then(() => {
-        app.listen(3000, () => {
-            console.log("Node.js application is connected to MySQL");
-            console.log("Server is running on port 3000");
-        });
-    })
-    .catch((err) => {
-        console.error("Error connecting to MySQL:", err);
+// sequelize
+//     // .sync({ force: true })
+//     .sync()
+//     .then(() => {
+//         app.listen(3000, () => {
+//             console.log("Node.js application is connected to MySQL");
+//             console.log("Server is running on port 3000");
+//         });
+//     })
+//     .catch((err) => {
+//         console.error("Error connecting to MySQL:", err);
+//     });
+mongoose.connection.once('open', () => {
+    app.listen(3000, () => {
+        console.log("Server is running on port 3000");
     });
+}).on('error', (err) => {
+    console.error("Error connecting to MongoDB:", err);
+});
