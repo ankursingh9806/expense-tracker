@@ -75,13 +75,10 @@ const resetPassword = async (req, res) => {
         const { password } = req.body;
         const { resetId } = req.params;
         const resetRequest = await ResetPassword.findOne({ where: { id: resetId, active: true } });
-        console.log("resetRequest:", resetRequest);
-
         if (!resetRequest) {
             return res.status(400).json({ message: "expired password reset request" });
         }
         const user = await User.findOne({ where: { id: resetRequest.UserId } });
-        console.log("this is:", user)
         if (!user) {
             return res.status(404).json({ message: "user not found" });
         }
