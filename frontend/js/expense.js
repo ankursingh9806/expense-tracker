@@ -40,7 +40,8 @@ async function fetchExpense(page = 1) {
         if (res.status === 200) {
             const tableBody = document.getElementById("expense-list");
             tableBody.innerHTML = "";
-            res.data.expenses.rows.forEach((expense) => {
+            // res.data.expenses.rows.forEach((expense) => {
+            res.data.expenses.forEach((expense) => {
                 showOnScreen(expense);
                 currentPage = page;
             });
@@ -123,7 +124,8 @@ function showOnScreen(expense) {
     const deleteButton = tableRow.querySelector(".delete-button");
     const editButton = tableRow.querySelector(".edit-button");
 
-    let expenseId = expense.id;
+    // let expenseId = expense.id;
+    let expenseId = expense._id;
     deleteButton.addEventListener("click", function () {
         deleteExpense(expense, expenseId, tableRow);
     });
