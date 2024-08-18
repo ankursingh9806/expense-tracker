@@ -15,8 +15,11 @@ const reportPage = async (req, res, next) => {
 const dailyReportView = async (req, res, next) => {
     try {
         const { date } = req.body;
-        const expenses = await Expense.findAll({
-            where: { date: date, UserId: req.user.id }
+        // const expenses = await Expense.findAll({
+        //     where: { date: date, UserId: req.user.id }
+        // });
+        const expenses = await Expense.find({
+            date: date, userId: req.user._id
         });
         res.status(200).json({ expenses, message: "daily report sent" });
     } catch (err) {
@@ -28,8 +31,11 @@ const dailyReportView = async (req, res, next) => {
 const dailyReportDownload = async (req, res, next) => {
     try {
         const { date } = req.body;
-        const expenses = await Expense.findAll({
-            where: { date: date, UserId: req.user.id }
+        // const expenses = await Expense.findAll({
+        //     where: { date: date, UserId: req.user.id }
+        // });
+        const expenses = await Expense.find({
+            date: date, userId: req.user._id
         });
         const expensesToString = JSON.stringify(expenses);
         const fileName = `expense-${date}.csv`;
@@ -44,13 +50,19 @@ const dailyReportDownload = async (req, res, next) => {
 const monthlyReportView = async (req, res, next) => {
     try {
         const { month } = req.body;
-        const expenses = await Expense.findAll({
-            where: {
-                date: {
-                    [Op.like]: `${month}%`,
-                },
-                UserId: req.user.id
-            }
+        // const expenses = await Expense.findAll({
+        //     where: {
+        //         date: {
+        //             [Op.like]: `${month}%`,
+        //         },
+        //         UserId: req.user.id
+        //     }
+        // });
+        const expenses = await Expense.find({
+            date: {
+                $regex: new RegExp(`^${month}`)
+            },
+            userId: req.user._id
         });
         res.status(200).json({ expenses, message: "monthly report sent" });
     } catch (err) {
@@ -62,13 +74,19 @@ const monthlyReportView = async (req, res, next) => {
 const monthlyReportDownload = async (req, res, next) => {
     try {
         const { month } = req.body;
-        const expenses = await Expense.findAll({
-            where: {
-                date: {
-                    [Op.like]: `${month}%`,
-                },
-                UserId: req.user.id
-            }
+        // const expenses = await Expense.findAll({
+        //     where: {
+        //         date: {
+        //             [Op.like]: `${month}%`,
+        //         },
+        //         UserId: req.user.id
+        //     }
+        // });
+        const expenses = await Expense.find({
+            date: {
+                $regex: new RegExp(`^${month}`)
+            },
+            userId: req.user._id
         });
         const expensesToString = JSON.stringify(expenses);
         const fileName = `expense-${month}.csv`;

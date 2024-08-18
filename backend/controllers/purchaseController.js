@@ -12,18 +12,35 @@ const purchasePremium = async (req, res) => {
             amount: 200,
             currency: "INR",
         };
-        rzp.orders.create(options, (err, order) => {
+        // rzp.orders.create(options, (err, order) => {
+        //     if (err) {
+        //         throw new Error(JSON.stringify(err));
+        //     }
+        //     req.user
+        //         .createOrder({ orderId: order.id, status: "PENDING" })
+        //         .then(() => {
+        //             return res.status(201).json({ order, key_id: rzp.key_id });
+        //         })
+        //         .catch((err) => {
+        //             throw new Error(err);
+        //         });
+        // });
+        rzp.orders.create(options, async (err, order) => {
             if (err) {
                 throw new Error(JSON.stringify(err));
             }
-            req.user
-                .createOrder({ orderId: order.id, status: "PENDING" })
-                .then(() => {
-                    return res.status(201).json({ order, key_id: rzp.key_id });
-                })
-                .catch((err) => {
-                    throw new Error(err);
+            try {
+                const newOrder = new Order({
+                    userId: req.user._id,
+                    orderId: order.id,
+                    status: "PENDING",
                 });
+                await newOrder.save();
+                return res.status(201).json({ order, key_id: rzp.key_id });
+            } catch (saveErr) {
+                console.log(saveErr);
+                return res.status(500).json({ error: saveErr.message, message: "failed to save order" });
+            }
         });
     } catch (err) {
         console.log(err);
@@ -33,20 +50,27 @@ const purchasePremium = async (req, res) => {
 
 const updateTransactionStatus = async (req, res) => {
     try {
-        const UserId = req.user.id;
+        // const UserId = req.user.id;
+        userId = req.user._id;
         const { payment_id, order_id } = req.body;
-        const order = await Order.findOne({ where: { orderId: order_id } });
-        const promise1 = order.update({ paymentId: payment_id, status: "SUCCESSFUL" });
-        const promise2 = req.user.update({ isPremiumUser: true });
-        Promise.all([promise1, promise2]).then(() => {
-            return res.status(202).json({
-                success: true,
-                message: "transaction successful",
-                token: userController.generateAccessToken(UserId, undefined, true)
-            });
-        }).catch((error) => {
-            throw new Error(error);
-        });
+        // const order = await Order.findOne({ where: { orderId: order_id } });
+        const order = await Order.findOne({ orderId: order_id });
+        // const promise1 = order.update({ paymentId: payment_id, status: "SUCCESSFUL" });
+        order.paymentId = payment_id;
+        order.status = "SUCCESSFUL";
+        await order.save();
+        // const promise2 = req.user.update({ isPremiumUser: true });
+        user.isPremiumUser = true;
+        await user.save();
+        // Promise.all([promise1, promise2]).then(() => {
+        //     return res.status(202).json({
+        //         success: true,
+        //         message: "transaction successful",
+        //         token: userController.generateAccessToken(UserId, undefined, true)
+        //     });
+        // }).catch((error) => {
+        //     throw new Error(error);
+        // });
     } catch (err) {
         console.log(err);
         res.status(403).json({ error: err.message, message: "something went wrong" });

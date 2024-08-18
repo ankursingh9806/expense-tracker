@@ -26,13 +26,15 @@ const resetPasswordPage = async (req, res, next) => {
 const forgotPassword = async (req, res, next) => {
     try {
         const { email } = req.body;
-        const user = await User.findOne({ where: { email: email } });
+        // const user = await User.findOne({ where: { email: email } });
+        const user = await User.findOne({ email: email });
         if (!user) {
             return res.status(404).json({ message: "user not found" });
         }
         const requestId = uuid.v4();
         const resetData = {
-            UserId: user.id,
+            // UserId: user.id,
+            userId: user._id,
             id: requestId,
             active: true
         };
@@ -74,20 +76,21 @@ const resetPassword = async (req, res) => {
     try {
         const { password } = req.body;
         const { resetId } = req.params;
-        const resetRequest = await ResetPassword.findOne({ where: { id: resetId, active: true } });
-        console.log("resetRequest:", resetRequest);
-
+        // const resetRequest = await ResetPassword.findOne({ where: { id: resetId, active: true } });
+        const resetRequest = await ResetPassword.findOne({ id: resetId, active: true });
         if (!resetRequest) {
             return res.status(400).json({ message: "expired password reset request" });
         }
-        const user = await User.findOne({ where: { id: resetRequest.UserId } });
-        console.log("this is:", user)
+        // const user = await User.findOne({ where: { id: resetRequest.UserId } });
+        const user = await User.findOne({ _id: resetRequest.userId });
         if (!user) {
             return res.status(404).json({ message: "user not found" });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        await User.update({ password: hashedPassword }, { where: { id: user.id } });
-        await ResetPassword.update({ active: false }, { where: { id: resetId } });
+        // await User.update({ password: hashedPassword }, { where: { id: user.id } });
+        await User.updateOne({ _id: user._id }, { password: hashedPassword });
+        // await ResetPassword.update({ active: false }, { where: { id: resetId } });
+        await ResetPassword.updateOne({ id: resetId }, { active: false });
         res.status(200).json({ message: "password updated" });
     } catch (err) {
         console.error("error:", err);

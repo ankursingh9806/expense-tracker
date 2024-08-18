@@ -33,7 +33,8 @@ const loginPage = async (req, res, next) => {
 const signup = async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
-        const existingUser = await User.findOne({ where: { email: email } });
+        // const existingUser = await User.findOne({ where: { email: email } });
+        const existingUser = await User.findOne({ email: email });
         if (existingUser) {
             return res.status(409).json({ message: "user already exists" });
         }
@@ -54,7 +55,8 @@ const signup = async (req, res, next) => {
 const login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
-        const existingUser = await User.findOne({ where: { email: email } });
+        // const existingUser = await User.findOne({ where: { email: email } });
+        const existingUser = await User.findOne({ email: email });
         if (!existingUser) {
             return res.status(404).json({ message: "user not found" });
         }
@@ -62,7 +64,8 @@ const login = async (req, res, next) => {
         if (!isPasswordValid) {
             return res.status(401).json({ message: "incorrect password" });
         }
-        const token = generateAccessToken(existingUser.id, existingUser.email);
+        // const token = generateAccessToken(existingUser.id, existingUser.email);
+        const token = generateAccessToken(existingUser._id, existingUser.email);
         res.status(200).json({ message: "user logged in", token: token });
     } catch (err) {
         console.error("error:", err);
