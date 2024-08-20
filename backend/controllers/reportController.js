@@ -7,22 +7,21 @@ const reportPage = async (req, res, next) => {
     try {
         res.sendFile(path.join(__dirname, "..", "..", "frontend", "html", "report.html"));
     } catch (err) {
-        console.error("error getting report page", err);
-        res.status(500).json({ success: false, error: "internal server error" });
+        console.error("error:", err);
+        res.status(500).json({ error: "internal server error" });
     }
 };
 
-// daily report
 const dailyReportView = async (req, res, next) => {
     try {
         const { date } = req.body;
         const expenses = await Expense.findAll({
             where: { date: date, UserId: req.user.id }
         });
-        res.status(200).json({ expenses, success: true, message: "daily report sent" });
+        res.status(200).json({ expenses, message: "daily report sent" });
     } catch (err) {
-        console.error("error getting daily report:", err);
-        res.status(500).json({ success: false, error: "internal server error" });
+        console.error("error:", err);
+        res.status(500).json({ error: "internal server error" });
     }
 };
 
@@ -35,14 +34,13 @@ const dailyReportDownload = async (req, res, next) => {
         const expensesToString = JSON.stringify(expenses);
         const fileName = `expense-${date}.csv`;
         const fileUrl = await s3services.uploadToS3(expensesToString, fileName);
-        res.status(200).json({ fileUrl: fileUrl.Location, success: true, message: "daily report downloaded" });
+        res.status(200).json({ fileUrl: fileUrl.Location, message: "daily report downloaded" });
     } catch (err) {
-        console.error("error downloading daily report:", err);
-        res.status(500).json({ success: false, error: "internal server error" });
+        console.error("error:", err);
+        res.status(500).json({ error: "internal server error" });
     }
 };
 
-// monthly report
 const monthlyReportView = async (req, res, next) => {
     try {
         const { month } = req.body;
@@ -54,10 +52,10 @@ const monthlyReportView = async (req, res, next) => {
                 UserId: req.user.id
             }
         });
-        res.status(200).json({ expenses, success: true, message: "monthly report sent" });
+        res.status(200).json({ expenses, message: "monthly report sent" });
     } catch (err) {
-        console.error("error getting monthly report:", err);
-        res.status(500).json({ success: false, error: "internal server error" });
+        console.error("error:", err);
+        res.status(500).json({ error: "internal server error" });
     }
 };
 
@@ -75,10 +73,10 @@ const monthlyReportDownload = async (req, res, next) => {
         const expensesToString = JSON.stringify(expenses);
         const fileName = `expense-${month}.csv`;
         const fileUrl = await s3services.uploadToS3(expensesToString, fileName);
-        res.status(200).json({ fileUrl: fileUrl.Location, success: true, message: "monthly report downloaded" });
+        res.status(200).json({ fileUrl: fileUrl.Location, message: "monthly report downloaded" });
     } catch (err) {
-        console.error("error downloading monthly report:", err);
-        res.status(500).json({ success: false, error: "internal server error" });
+        console.error("error:", err);
+        res.status(500).json({ error: "internal server error" });
     }
 };
 

@@ -28,7 +28,7 @@ async function logout() {
     try {
         const res = await axios.post(`http://${ip}:3000/user/logout`);
         if (res.status === 200) {
-            localStorage.removeItem("token");
+            localStorage.clear();
             window.location.href = "../html/login.html";
         } else {
             alert("Failed to logout");

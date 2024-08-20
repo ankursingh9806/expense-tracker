@@ -2,7 +2,6 @@ const path = require("path");
 const bcrypt = require("bcrypt");
 const uuid = require("uuid");
 var nodemailer = require("nodemailer");
-
 const User = require("../models/userModel");
 const ResetPassword = require("../models/resetPasswordModel");
 
@@ -10,8 +9,8 @@ const forgotPasswordPage = async (req, res, next) => {
     try {
         res.sendFile(path.join(__dirname, "..", "..", "frontend", "html", "forgotPassword.html"));
     } catch (err) {
-        console.error("error getting forgot password page", err);
-        res.status(500).json({ success: false, error: "internal server error" });
+        console.error("error:", err);
+        res.status(500).json({ error: "internal server error" });
     }
 };
 
@@ -19,8 +18,8 @@ const resetPasswordPage = async (req, res, next) => {
     try {
         res.sendFile(path.join(__dirname, "..", "..", "frontend", "html", "resetPassword.html"));
     } catch (err) {
-        console.error("error getting reset password page", err);
-        res.status(500).json({ success: false, error: "internal server error" });
+        console.error("error:", err);
+        res.status(500).json({ error: "internal server error" });
     }
 };
 
@@ -29,14 +28,16 @@ const forgotPassword = async (req, res, next) => {
         const { email } = req.body;
         const user = await User.findOne({ where: { email: email } });
         if (!user) {
-            return res.status(404).json({ status: false, message: "user not found" });
+            return res.status(404).json({ message: "user not found" });
         }
         const requestId = uuid.v4();
-        await ResetPassword.create({
+        const resetData = {
             UserId: user.id,
             id: requestId,
             active: true
-        });
+        };
+        await ResetPassword.create(resetData);
+        // nodemailer
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
@@ -62,39 +63,32 @@ const forgotPassword = async (req, res, next) => {
             }
         });
         console.log("email sent");
-        res.status(200).json({ status: true, message: "email sent" });
-    }
-    catch (err) {
-        console.error("error sending mail", err);
-        res.status(500).json({ status: false, error: "internal server error" });
+        res.status(200).json({ message: "email sent" });
+    } catch (err) {
+        console.error("error:", err);
+        res.status(500).json({ error: "internal server error" });
     }
 }
 
 const resetPassword = async (req, res) => {
     try {
         const { password } = req.body;
-        const resetId = req.params.resetId;
-
+        const { resetId } = req.params;
         const resetRequest = await ResetPassword.findOne({ where: { id: resetId, active: true } });
         if (!resetRequest) {
-            return res.status(400).json({ status: false, message: "expired password reset request" });
+            return res.status(400).json({ message: "expired password reset request" });
         }
-
         const user = await User.findOne({ where: { id: resetRequest.UserId } });
         if (!user) {
-            return res.status(404).json({ status: false, message: "user not found" });
+            return res.status(404).json({ message: "user not found" });
         }
-
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
-
+        const hashedPassword = await bcrypt.hash(password, 10);
         await User.update({ password: hashedPassword }, { where: { id: user.id } });
         await ResetPassword.update({ active: false }, { where: { id: resetId } });
-
-        res.status(200).json({ status: true, message: "password updated" });
+        res.status(200).json({ message: "password updated" });
     } catch (err) {
-        console.error("error updating password", err);
-        res.status(500).json({ status: false, error: "internal server error" });
+        console.error("error:", err);
+        res.status(500).json({ error: "internal server error" });
     }
 };
 
