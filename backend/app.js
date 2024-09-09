@@ -55,6 +55,11 @@ app.use("/premium", leaderboardRoute);
 app.use("/premium", reportRoute);
 app.use("/password", resetPasswordRoute);
 
+// undefined route
+app.use((req, res) => {
+    res.sendFile(path.join(__dirname, "..", "frontend", "html", "signup.html"));
+});
+
 User.hasMany(Expense, { foreignKey: 'userId' });
 Expense.belongsTo(User, { foreignKey: 'userId' });
 
