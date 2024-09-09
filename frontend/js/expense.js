@@ -1,32 +1,50 @@
-const form = document.getElementById("expense-form");
-const error = document.getElementById("error");
-const premiumButton = document.getElementById("premium");
-const homeButton = document.getElementById("home");
-const logoButton = document.getElementById("logo");
-const leaderboardButton = document.getElementById("leaderboard");
-const reportButton = document.getElementById("report");
-const logoutButton = document.getElementById("logout-button");
-
-document.addEventListener("DOMContentLoaded", fetchExpense());
-document.addEventListener("DOMContentLoaded", isPremiumUser);
-form.addEventListener("submit", addExpense);
-logoutButton.addEventListener("click", logout);
-premiumButton.addEventListener("click", showConfirm);
-
-homeButton.addEventListener("click", function () {
+// shared
+document.getElementById("home").addEventListener("click", function () {
     window.location.href = "../html/expense.html";
 })
 
-logoButton.addEventListener("click", function () {
+document.getElementById("logo").addEventListener("click", function () {
     window.location.href = "../html/expense.html";
 })
+
+document.getElementById("logout-button").addEventListener("click", logout);
+document.getElementById("premium").addEventListener("click", showConfirm);
 
 function showConfirm(e) {
-    const confirm = window.confirm("Buy Premium and unlock all the features.");
-    if (confirm) {
+    const confirmPurchase = window.confirm("Buy Premium and unlock all the features.");
+    if (confirmPurchase) {
         purchasePremium(e);
     }
-};
+}
+
+async function logout() {
+    try {
+        const token = localStorage.getItem('token');
+        const res = await axios.post('http://localhost:3000/user/logout', {}, {
+            headers: {
+                Authorization: token
+            }
+        });
+        if (res.status === 200) {
+            localStorage.removeItem('token');
+            window.location.href = '../html/login.html';
+        } else {
+            console.error('failed to logout');
+        }
+    } catch (err) {
+        console.error('error in logout:', err);
+    }
+}
+
+// expense
+const form = document.getElementById("expense-form");
+const error = document.getElementById("error");
+
+document.addEventListener("DOMContentLoaded", function () {
+    fetchExpense(1);
+});
+document.addEventListener("DOMContentLoaded", isPremiumUser);
+form.addEventListener("submit", addExpense);
 
 let currentPage = 1;
 async function fetchExpense(page = 1) {
@@ -40,16 +58,16 @@ async function fetchExpense(page = 1) {
         if (res.status === 200) {
             const tableBody = document.getElementById("expense-list");
             tableBody.innerHTML = "";
-            res.data.expenses.rows.forEach((expense) => {
+            res.data.expenses.forEach((expense) => {
                 showOnScreen(expense);
-                currentPage = page;
             });
+            currentPage = page;
             updatePagination(res.data.totalPages);
         } else {
-            alert("Failed to load expenses");
+            console.log("failed to load expenses");
         }
     } catch (err) {
-        console.error("Failed to load expenses from database:", err);
+        console.error("error in loading expenses:", err);
     }
 }
 
@@ -70,8 +88,6 @@ function updatePagination(totalPages) {
     }
 }
 
-const date = new Date();
-
 async function addExpense(e) {
     try {
         e.preventDefault();
@@ -86,7 +102,7 @@ async function addExpense(e) {
             category: category
         };
         if (!expenseData.date || !expenseData.amount || !expenseData.description || !expenseData.category) {
-            error.textContent = "Please fill out all fields."
+            error.textContent = "Fill out all fields"
             return;
         }
         const token = localStorage.getItem("token");
@@ -97,14 +113,14 @@ async function addExpense(e) {
         });
         if (res.status === 201) {
             showOnScreen(res.data.newExpense);
+            await fetchExpense(currentPage);
             form.reset();
             error.textContent = "";
-            await fetchExpense();
         } else {
-            error.textContent = "Expense not added. Please try again.";
+            error.textContent = "Expense not added";
         }
     } catch (err) {
-        console.error("failed to save expense to database:", err);
+        console.error("error in adding expense:", err);
     }
 }
 
@@ -125,18 +141,17 @@ function showOnScreen(expense) {
 
     let expenseId = expense.id;
     deleteButton.addEventListener("click", function () {
-        deleteExpense(expense, expenseId, tableRow);
+        deleteExpense(expenseId);
     });
     editButton.addEventListener("click", function () {
-        updateExpense(expense, expenseId, tableRow);
+        editExpense(expense, expenseId);
     });
 
     tableBody.appendChild(tableRow);
 }
 
-async function deleteExpense(expense, expenseId, tableRow) {
+async function deleteExpense(expenseId) {
     try {
-        const tableBody = document.getElementById("expense-list");
         const token = localStorage.getItem("token");
         const res = await axios.delete(`http://localhost:3000/expense/expense-delete/${expenseId}`, {
             headers: {
@@ -144,8 +159,7 @@ async function deleteExpense(expense, expenseId, tableRow) {
             }
         });
         if (res.status === 200) {
-            tableBody.removeChild(tableRow);
-            await fetchExpense();
+            await fetchExpense(currentPage);
         } else {
             error.textContent = "Failed to delete expense. Please try again.";
         }
@@ -154,7 +168,7 @@ async function deleteExpense(expense, expenseId, tableRow) {
     }
 }
 
-async function updateExpense(expense, expenseId, tableRow) {
+async function editExpense(expense, expenseId) {
     try {
         document.getElementById("date").value = expense.date;
         document.getElementById("amount").value = expense.amount;
@@ -164,84 +178,52 @@ async function updateExpense(expense, expenseId, tableRow) {
         document.getElementById("submit-button").textContent = "Update";
 
         form.removeEventListener("submit", addExpense);
-        form.addEventListener("submit", editExpenseData);
-
-        async function editExpenseData(e) {
-            try {
-                e.preventDefault();
-                const updatedDate = e.target.date.value;
-                const updatedAmount = e.target.amount.value;
-                const updatedDescription = e.target.description.value;
-                const updatedCategory = e.target.category.value;
-
-                const updatedExpenseData = {
-                    date: updatedDate,
-                    amount: updatedAmount,
-                    description: updatedDescription,
-                    category: updatedCategory
-                };
-
-                if (!updatedExpenseData.date || !updatedExpenseData.amount || !updatedExpenseData.description || !updatedExpenseData.category) {
-                    error.textContent = "Please fill out all fields."
-                    return;
-                }
-                const token = localStorage.getItem("token");
-                const res = await axios.put(`http://localhost:3000/expense/expense-update/${expenseId}`, updatedExpenseData, {
-                    headers: {
-                        Authorization: token
-                    }
-                });
-                if (res.status === 200) {
-                    expense.date = updatedDate;
-                    expense.amount = updatedAmount;
-                    expense.description = updatedDescription;
-                    expense.category = updatedCategory;
-
-                    tableRow.innerHTML = `
-                        <td>${expense.date}</td>
-                        <td>${expense.amount}</td>
-                        <td>${expense.description}</td>
-                        <td>${expense.category}</td>
-                        <td>
-                              <button class="btn btn-secondary btn-sm delete-button">Delete</button>
-                              <button class="btn btn-secondary btn-sm edit-button">Edit</button>
-                        </td>`;
-                    const deleteButton = tableRow.querySelector(".delete-button");
-                    const editButton = tableRow.querySelector(".edit-button");
-
-                    deleteButton.addEventListener("click", function () {
-                        deleteExpense(expense, expenseId, tableRow);
-                    });
-                    editButton.addEventListener("click", function () {
-                        updateExpense(expense, expenseId, tableRow);
-                    });
-
-                    window.location.reload();
-                    error.textContent = "";
-                    document.getElementById("submit-button").textContent = "Add Expense";
-                } else {
-                    error.textContent = "Failed to update expense. Please try again.";
-                }
-            } catch (err) {
-                console.error("failed to edit expense:", err);
-            }
-        }
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            await updateExpense(e, expenseId);
+        });
     } catch (err) {
-        console.error("failed to update expense:", err);
+        console.error("error in editing expense:", err);
     }
 }
 
-async function logout() {
+async function updateExpense(e, expenseId) {
     try {
-        const res = await axios.post("http://localhost:3000/user/logout");
+        e.preventDefault();
+        const updatedDate = e.target.date.value;
+        const updatedAmount = e.target.amount.value;
+        const updatedDescription = e.target.description.value;
+        const updatedCategory = e.target.category.value;
+
+        const updatedExpenseData = {
+            date: updatedDate,
+            amount: updatedAmount,
+            description: updatedDescription,
+            category: updatedCategory
+        };
+
+        if (!updatedExpenseData.date || !updatedExpenseData.amount || !updatedExpenseData.description || !updatedExpenseData.category) {
+            error.textContent = "Fill out all fields"
+            return;
+        }
+        const token = localStorage.getItem("token");
+        const res = await axios.put(`http://localhost:3000/expense/expense-update/${expenseId}`, updatedExpenseData, {
+            headers: {
+                Authorization: token
+            }
+        });
         if (res.status === 200) {
-            localStorage.clear();
-            window.location.href = "../html/login.html";
+            await fetchExpense(currentPage);
+            form.reset();
+            error.textContent = "";
+            document.getElementById("submit-button").textContent = "Add Expense";
+            form.removeEventListener("submit", updateExpense);
+            form.addEventListener("submit", addExpense);
         } else {
-            alert("Failed to logout");
+            error.textContent = "Failed to update expense";
         }
     } catch (err) {
-        console.error("failed to logout:", err);
+        console.error("error in updating expense:", err);
     }
 }
 
@@ -279,7 +261,7 @@ async function purchasePremium(e) {
         const rzp = new Razorpay(options);
         rzp.open();
         rzp.on("payment.failed", function (response) {
-            alert("Payment failed. Please try again.");
+            alert("Payment failed");
         });
     } catch (err) {
         console.error("error purchasing premium membership:", err);
@@ -296,17 +278,21 @@ async function isPremiumUser() {
             },
         });
         if (res.data.isPremiumUser) {
-            premiumButton.textContent = "Premium Member 👑";
-            premiumButton.removeEventListener("click", showConfirm);
-            leaderboardButton.addEventListener("click", function () {
+            document.getElementById("premium").textContent = "Premium Member 👑";
+            document.getElementById("premium").removeEventListener("click", showConfirm);
+            document.getElementById("leaderboard").addEventListener("click", function () {
                 window.location.href = "../html/leaderboard.html";
             });
-            reportButton.addEventListener("click", function () {
+            document.getElementById("report").addEventListener("click", function () {
                 window.location.href = "../html/report.html";
             })
         } else {
-            leaderboardButton.addEventListener("click", showConfirm);
-            reportButton.addEventListener("click", showConfirm);
+            document.getElementById("leaderboard").addEventListener("click", function (e) {
+                alert("Buy Premium and see the leaderboard.");
+            });
+            document.getElementById("report").addEventListener("click", function (e) {
+                alert("Buy Premium and get your report.");
+            });
         }
     } catch (err) {
         console.error("error checking premium user status:", err);
