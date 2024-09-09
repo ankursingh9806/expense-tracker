@@ -36,6 +36,8 @@ async function logout() {
     }
 }
 
+const ip = "54.252.112.94";
+
 // leaderboard
 document.addEventListener("DOMContentLoaded", leaderboardShow);
 

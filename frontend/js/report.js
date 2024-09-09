@@ -36,6 +36,8 @@ async function logout() {
     }
 }
 
+const ip = "54.252.112.94";
+
 // daily report
 const dailyError = document.getElementById("daily-error");
 const dailyViewButton = document.getElementById("daily-view-button");
