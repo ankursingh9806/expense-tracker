@@ -1,37 +1,24 @@
 const Expense = require("../models/expenseModel");
 const User = require("../models/userModel");
-const path = require("path");
 const sequelize = require("../utils/database");
-
-const expensePage = async (req, res, next) => {
-    try {
-        res.sendFile(path.join(__dirname, "..", "..", "frontend", "html", "expense.html"));
-    } catch (err) {
-        console.error("error:", err);
-        res.status(500).json({ error: "internal server error" });
-    }
-};
 
 const fetchExpense = async (req, res, next) => {
     try {
         const { page = 1 } = req.query;
         const limit = 5;
         const offset = (page - 1) * limit;
-        const totalExpenses = await Expense.count({
-            where: { UserId: req.user.id }
-        });
         const expenses = await Expense.findAndCountAll({
-            where: { UserId: req.user.id },
+            where: { userId: req.user.id },
             limit: limit,
             offset: offset
         });
-        const totalPages = Math.ceil(totalExpenses / limit);
-        res.status(200).json({ expenses, totalPages, message: "expenses fetched" });
+        const totalPages = Math.ceil(expenses.count / limit);
+        res.status(200).json({ expenses: expenses.rows, totalPages, message: "expenses fetched" });
     } catch (err) {
         console.error("error:", err);
         res.status(500).json({ error: "internal server error" });
     }
-}
+};
 
 const addExpense = async (req, res, next) => {
     const t = await sequelize.transaction();
@@ -42,7 +29,7 @@ const addExpense = async (req, res, next) => {
             amount: amount,
             description: description,
             category: category,
-            UserId: req.user.id,
+            userId: req.user.id,
         };
         await Expense.create(newExpense, { transaction: t });
         // update total expense
@@ -65,10 +52,7 @@ const deleteExpense = async (req, res, next) => {
     try {
         const { expenseId } = req.params;
         const expense = await Expense.findByPk(expenseId);
-        await expense.destroy({
-            where: { UserId: req.user.id }, transaction: t
-        }
-        );
+        await expense.destroy();
         // update total expense
         const totalExpenses = Number(req.user.totalExpenses) - Number(expense.amount);
         await User.update(
@@ -98,7 +82,7 @@ const updateExpense = async (req, res, next) => {
         };
         const totalExpenses = Number(req.user.totalExpenses) - Number(expense.amount) + Number(amount);
         await Expense.update(updatedExpense,
-            { where: { id: expenseId, UserId: req.user.id }, transaction: t }
+            { where: { id: expenseId, userId: req.user.id }, transaction: t }
         );
         // update total expense
         await User.update(
@@ -115,7 +99,6 @@ const updateExpense = async (req, res, next) => {
 };
 
 module.exports = {
-    expensePage,
     fetchExpense,
     addExpense,
     deleteExpense,
