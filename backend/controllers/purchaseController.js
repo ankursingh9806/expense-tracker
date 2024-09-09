@@ -27,13 +27,13 @@ const purchasePremium = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        res.status(403).json({ message: "something went wrong", error: err.message });
+        res.status(403).json({ error: "something went wrong", error: err.message });
     }
 };
 
 const updateTransactionStatus = async (req, res) => {
     try {
-        const UserId = req.user.id;
+        const userId = req.user.id;
         const { payment_id, order_id } = req.body;
         const order = await Order.findOne({ where: { orderId: order_id } });
         const promise1 = order.update({ paymentId: payment_id, status: "SUCCESSFUL" });
@@ -42,14 +42,14 @@ const updateTransactionStatus = async (req, res) => {
             return res.status(202).json({
                 success: true,
                 message: "transaction successful",
-                token: userController.generateAccessToken(UserId, undefined, true)
+                token: userController.generateAccessToken(userId, undefined, true)
             });
         }).catch((error) => {
             throw new Error(error);
         });
     } catch (err) {
         console.log(err);
-        res.status(403).json({ error: err.message, message: "something went wrong" });
+        res.status(403).json({ error: err.message, error: "something went wrong" });
     }
 };
 
