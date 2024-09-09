@@ -1,41 +1,43 @@
-const homeButton = document.getElementById("home");
-const logoButton = document.getElementById("logo");
-const leaderboardButton = document.getElementById("leaderboard");
-const reportButton = document.getElementById("report");
-const logoutButton = document.getElementById("logout-button");
-
-logoutButton.addEventListener("click", logout);
-document.addEventListener("DOMContentLoaded", leaderboardShow);
-
-homeButton.addEventListener("click", function () {
+// shared
+document.getElementById("home").addEventListener("click", function () {
     window.location.href = "../html/expense.html";
 })
 
-logoButton.addEventListener("click", function () {
+document.getElementById("logo").addEventListener("click", function () {
     window.location.href = "../html/expense.html";
 })
 
-leaderboardButton.addEventListener("click", function () {
+document.getElementById("leaderboard").addEventListener("click", function () {
     window.location.href = "../html/leaderboard.html";
 })
 
-reportButton.addEventListener("click", function () {
+document.getElementById("report").addEventListener("click", function () {
     window.location.href = "../html/report.html";
 })
 
+document.getElementById("logout-button").addEventListener("click", logout);
+
 async function logout() {
     try {
-        const res = await axios.post("http://localhost:3000/user/logout");
+        const token = localStorage.getItem('token');
+        const res = await axios.post('http://localhost:3000/user/logout', {}, {
+            headers: {
+                Authorization: token
+            }
+        });
         if (res.status === 200) {
-            localStorage.clear();
-            window.location.href = "../html/login.html";
+            localStorage.removeItem('token');
+            window.location.href = '../html/login.html';
         } else {
-            alert("Failed to logout");
+            console.error('failed to logout');
         }
     } catch (err) {
-        console.error("failed to logout:", err);
+        console.error('error in logout:', err);
     }
 }
+
+// leaderboard
+document.addEventListener("DOMContentLoaded", leaderboardShow);
 
 async function leaderboardShow() {
     try {
@@ -47,10 +49,10 @@ async function leaderboardShow() {
                 position++;
             });
         } else {
-            alert("Failed to load leaderboard");
+            console.log("failed to load leaderboard");
         }
     } catch (err) {
-        console.error("failed to load leaderboard:", err);
+        console.error("error in loading leaderboard:", err);
     }
 }
 
