@@ -118,7 +118,7 @@ A simple and secure expense tracker designed to help users manage and track thei
 ### report
 ![report](/screenshots/15-report.png)
 
-### reort view
+### report view
 ![reortView](/screenshots/16-reportView.png)
 
 ### report download
