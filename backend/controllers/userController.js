@@ -36,7 +36,7 @@ const signup = async (req, res, next) => {
         // const existingUser = await User.findOne({ where: { email: email } });
         const existingUser = await User.findOne({ email: email });
         if (existingUser) {
-            return res.status(409).json({ message: "user already exists" });
+            return res.status(409).json({ error: "user already exists" });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = {
@@ -58,24 +58,15 @@ const login = async (req, res, next) => {
         // const existingUser = await User.findOne({ where: { email: email } });
         const existingUser = await User.findOne({ email: email });
         if (!existingUser) {
-            return res.status(404).json({ message: "user not found" });
+            return res.status(404).json({ error: "user not found" });
         }
         const isPasswordValid = await bcrypt.compare(password, existingUser.password);
         if (!isPasswordValid) {
-            return res.status(401).json({ message: "incorrect password" });
+            return res.status(401).json({ error: "incorrect password" });
         }
         // const token = generateAccessToken(existingUser.id, existingUser.email);
         const token = generateAccessToken(existingUser._id, existingUser.email);
         res.status(200).json({ message: "user logged in", token: token });
-    } catch (err) {
-        console.error("error:", err);
-        res.status(500).json({ error: "internal server error" });
-    }
-}
-
-const logout = async (req, res, next) => {
-    try {
-        res.status(200).json({ message: "user logged out" });
     } catch (err) {
         console.error("error:", err);
         res.status(500).json({ error: "internal server error" });
@@ -95,12 +86,21 @@ const isPremiumUser = async (req, res, next) => {
     }
 };
 
+const logout = async (req, res, next) => {
+    try {
+        res.status(200).json({ message: 'user logged out' });
+    } catch (err) {
+        console.error('error:', err);
+        res.status(500).json({ error: 'internal server error' });
+    }
+};
+
 module.exports = {
     signupPage,
     loginPage,
     signup,
     login,
     generateAccessToken,
-    logout,
     isPremiumUser,
+    logout
 }

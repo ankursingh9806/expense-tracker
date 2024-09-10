@@ -29,11 +29,11 @@ const forgotPassword = async (req, res, next) => {
         // const user = await User.findOne({ where: { email: email } });
         const user = await User.findOne({ email: email });
         if (!user) {
-            return res.status(404).json({ message: "user not found" });
+            return res.status(404).json({ error: "user not found" });
         }
         const requestId = uuid.v4();
         const resetData = {
-            // UserId: user.id,
+            // userId: user.id,
             userId: user._id,
             id: requestId,
             active: true
@@ -79,12 +79,12 @@ const resetPassword = async (req, res) => {
         // const resetRequest = await ResetPassword.findOne({ where: { id: resetId, active: true } });
         const resetRequest = await ResetPassword.findOne({ id: resetId, active: true });
         if (!resetRequest) {
-            return res.status(400).json({ message: "expired password reset request" });
+            return res.status(400).json({ error: "expired password reset request" });
         }
-        // const user = await User.findOne({ where: { id: resetRequest.UserId } });
+        // const user = await User.findOne({ where: { id: resetRequest.userId } });
         const user = await User.findOne({ _id: resetRequest.userId });
         if (!user) {
-            return res.status(404).json({ message: "user not found" });
+            return res.status(404).json({ error: "user not found" });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         // await User.update({ password: hashedPassword }, { where: { id: user.id } });

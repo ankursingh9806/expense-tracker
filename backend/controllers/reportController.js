@@ -1,22 +1,12 @@
 const Expense = require("../models/expenseModel");
-const path = require("path");
 const s3services = require("../services/s3services");
 const { Op } = require('sequelize');
-
-const reportPage = async (req, res, next) => {
-    try {
-        res.sendFile(path.join(__dirname, "..", "..", "frontend", "html", "report.html"));
-    } catch (err) {
-        console.error("error:", err);
-        res.status(500).json({ error: "internal server error" });
-    }
-};
 
 const dailyReportView = async (req, res, next) => {
     try {
         const { date } = req.body;
         // const expenses = await Expense.findAll({
-        //     where: { date: date, UserId: req.user.id }
+        //     where: { date: date, userId: req.user.id }
         // });
         const expenses = await Expense.find({
             date: date, userId: req.user._id
@@ -32,14 +22,14 @@ const dailyReportDownload = async (req, res, next) => {
     try {
         const { date } = req.body;
         // const expenses = await Expense.findAll({
-        //     where: { date: date, UserId: req.user.id }
+        //     where: { date: date, userId: req.user.id }
         // });
         const expenses = await Expense.find({
             date: date, userId: req.user._id
         });
-        const expensesToString = JSON.stringify(expenses);
-        const fileName = `expense-${date}.csv`;
-        const fileUrl = await s3services.uploadToS3(expensesToString, fileName);
+        const fileContent = JSON.stringify(expenses);
+        const fileName = `expense-${date}.json`;
+        const fileUrl = await s3services.uploadToS3(fileContent, fileName);
         res.status(200).json({ fileUrl: fileUrl.Location, message: "daily report downloaded" });
     } catch (err) {
         console.error("error:", err);
@@ -51,12 +41,7 @@ const monthlyReportView = async (req, res, next) => {
     try {
         const { month } = req.body;
         // const expenses = await Expense.findAll({
-        //     where: {
-        //         date: {
-        //             [Op.like]: `${month}%`,
-        //         },
-        //         UserId: req.user.id
-        //     }
+        //     where: { date: { [Op.like]: `${month}%`, }, userId: req.user.id }
         // });
         const expenses = await Expense.find({
             date: {
@@ -75,12 +60,7 @@ const monthlyReportDownload = async (req, res, next) => {
     try {
         const { month } = req.body;
         // const expenses = await Expense.findAll({
-        //     where: {
-        //         date: {
-        //             [Op.like]: `${month}%`,
-        //         },
-        //         UserId: req.user.id
-        //     }
+        //     where: { date: { [Op.like]: `${month}%`, }, userId: req.user.id }
         // });
         const expenses = await Expense.find({
             date: {
@@ -88,9 +68,9 @@ const monthlyReportDownload = async (req, res, next) => {
             },
             userId: req.user._id
         });
-        const expensesToString = JSON.stringify(expenses);
-        const fileName = `expense-${month}.csv`;
-        const fileUrl = await s3services.uploadToS3(expensesToString, fileName);
+        const fileContent = JSON.stringify(expenses);
+        const fileName = `expense-${month}.json`;
+        const fileUrl = await s3services.uploadToS3(fileContent, fileName);
         res.status(200).json({ fileUrl: fileUrl.Location, message: "monthly report downloaded" });
     } catch (err) {
         console.error("error:", err);
@@ -99,7 +79,6 @@ const monthlyReportDownload = async (req, res, next) => {
 };
 
 module.exports = {
-    reportPage,
     dailyReportView,
     dailyReportDownload,
     monthlyReportView,

@@ -1,38 +1,38 @@
-const homeButton = document.getElementById("home");
-const logoButton = document.getElementById("logo");
-const leaderboardButton = document.getElementById("leaderboard");
-const reportButton = document.getElementById("report");
-const logoutButton = document.getElementById("logout-button");
-
-logoutButton.addEventListener("click", logout);
-
-homeButton.addEventListener("click", function () {
+// shared
+document.getElementById("home").addEventListener("click", function () {
     window.location.href = "../html/expense.html";
 })
 
-logoButton.addEventListener("click", function () {
+document.getElementById("logo").addEventListener("click", function () {
     window.location.href = "../html/expense.html";
 })
 
-leaderboardButton.addEventListener("click", function () {
+document.getElementById("leaderboard").addEventListener("click", function () {
     window.location.href = "../html/leaderboard.html";
 })
 
-reportButton.addEventListener("click", function () {
+document.getElementById("report").addEventListener("click", function () {
     window.location.href = "../html/report.html";
 })
 
+document.getElementById("logout-button").addEventListener("click", logout);
+
 async function logout() {
     try {
-        const res = await axios.post("http://localhost:3000/user/logout");
+        const token = localStorage.getItem('token');
+        const res = await axios.post('http://localhost:3000/user/logout', {}, {
+            headers: {
+                Authorization: token
+            }
+        });
         if (res.status === 200) {
-            localStorage.clear();
-            window.location.href = "../html/login.html";
+            localStorage.removeItem('token');
+            window.location.href = '../html/login.html';
         } else {
-            alert("Failed to logout");
+            console.error('failed to logout');
         }
     } catch (err) {
-        console.error("failed to logout:", err);
+        console.error('error in logout:', err);
     }
 }
 
@@ -48,14 +48,14 @@ dailyDownloadButton.addEventListener("click", async function (e) {
 async function dailyReportView(e) {
     try {
         e.preventDefault();
-        const dateInput = document.getElementById("date");
-        if (!dateInput.value) {
-            dailyError.textContent = "Please select a date.";
+        const date = document.getElementById('date').value;
+        const reportData = {
+            date: date,
+        };
+        if (!reportData.date) {
+            dailyError.textContent = "Select a date";
             return;
         }
-        const reportData = {
-            date: dateInput.value,
-        };
         const token = localStorage.getItem("token");
         const res = await axios.post("http://localhost:3000/premium/daily-report-view", reportData, {
             headers: {
@@ -81,24 +81,24 @@ async function dailyReportView(e) {
             totalAmountElement.textContent = `Total = ${totalAmount}`;
             dailyError.textContent = "";
         } else {
-            dailyError.textContent = "Report not available. Please try again.";
+            dailyError.textContent = "Daily report not available";
         }
     } catch (err) {
-        console.error("failed to show daily report:", err);
+        console.error("error in showing daily report:", err);
     }
 }
 
 async function dailyReportDownload(e) {
     try {
         e.preventDefault();
-        const dateInput = document.getElementById("date");
-        if (!dateInput.value) {
-            dailyError.textContent = "Please select a date.";
+        const date = document.getElementById('date').value;
+        const reportData = {
+            date: date,
+        };
+        if (!reportData.date) {
+            dailyError.textContent = "Select a date";
             return;
         }
-        const reportData = {
-            date: dateInput.value,
-        };
         const token = localStorage.getItem("token");
         const res = await axios.post("http://localhost:3000/premium/daily-report-download", reportData, {
             headers: {
@@ -109,10 +109,10 @@ async function dailyReportDownload(e) {
             dailyError.textContent = "";
             window.open(res.data.fileUrl);
         } else {
-            dailyError.textContent = "Failed to download report. Please try again.";
+            dailyError.textContent = "Failed to download daily report";
         }
     } catch (err) {
-        console.error("failed to download daily report:", err);
+        console.error("error in downloading daily report:", err);
     }
 }
 
@@ -128,15 +128,14 @@ monthlyDownloadButton.addEventListener("click", async function (e) {
 async function monthlyReportView(e) {
     try {
         e.preventDefault();
-        const dateInput = document.getElementById("month");
-        if (!dateInput.value) {
-            monthlyError.textContent = "Please select a month.";
+        const month = document.getElementById('month').value;
+        const reportData = {
+            month: month,
+        };
+        if (!reportData.month) {
+            monthlyError.textContent = "Select a month";
             return;
         }
-        const reportData = {
-            month: dateInput.value,
-        };
-        console.log(reportData);
         const token = localStorage.getItem("token");
         const res = await axios.post("http://localhost:3000/premium/monthly-report-view", reportData, {
             headers: {
@@ -162,24 +161,24 @@ async function monthlyReportView(e) {
             totalAmountElement.textContent = `Total = ${totalAmount}`;
             monthlyError.textContent = "";
         } else {
-            monthlyError.textContent = "Report not available. Please try again.";
+            monthlyError.textContent = "Monthly report not available";
         }
     } catch (err) {
-        console.error("failed to show monthly report:", err);
+        console.error("error in showing monthly report:", err);
     }
 }
 
 async function monthlyReportDownload(e) {
     try {
         e.preventDefault();
-        const dateInput = document.getElementById("month");
-        if (!dateInput.value) {
-            monthlyError.textContent = "Please select a month.";
+        const month = document.getElementById('month').value;
+        const reportData = {
+            month: month,
+        };
+        if (!reportData.month) {
+            monthlyError.textContent = "Select a month";
             return;
         }
-        const reportData = {
-            month: dateInput.value,
-        };
         const token = localStorage.getItem("token");
         const res = await axios.post("http://localhost:3000/premium/monthly-report-download", reportData, {
             headers: {
@@ -190,9 +189,9 @@ async function monthlyReportDownload(e) {
             monthlyError.textContent = "";
             window.open(res.data.fileUrl);
         } else {
-            monthlyError.textContent = "Failed to download report. Please try again.";
+            monthlyError.textContent = "Failed to download montyly report";
         }
     } catch (err) {
-        console.error("failed to download monthly report:", err);
+        console.error("error in downloading monthly report:", err);
     }
 }

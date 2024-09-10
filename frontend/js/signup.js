@@ -15,21 +15,21 @@ async function signup(e) {
             password: password
         };
         if (!signupDetails.name || !signupDetails.email || !signupDetails.password) {
-            error.textContent = "Please fill out all fields.";
+            error.textContent = "Fill out all fields";
             return;
         }
         const res = await axios.post("http://localhost:3000/user/signup", signupDetails);
         if (res.status === 201) {
-            alert("Signup successfull! Please login to continue.")
+            alert("Signup successfull! Login to continue")
             window.location.href = "../html/login.html";
         } else {
-            error.textContent = "Signup failed. Please try again later.";
+            error.textContent = "Signup failed";
         }
     } catch (err) {
         if (err.response && err.response.status === 409) {
-            error.textContent = "Email already exists. Please Login.";
+            error.textContent = "Email already exists";
         } else {
-            error.textContent = "An error occurred during Signup. Please try again later.";
+            error.textContent = "An error occurred during Signup";
         }
     }
 }

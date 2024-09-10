@@ -1,16 +1,6 @@
 const Expense = require("../models/expenseModel");
 const User = require("../models/userModel");
-const path = require("path");
 const mongoose = require("../utils/database");
-
-const expensePage = async (req, res, next) => {
-    try {
-        res.sendFile(path.join(__dirname, "..", "..", "frontend", "html", "expense.html"));
-    } catch (err) {
-        console.error("error:", err);
-        res.status(500).json({ error: "internal server error" });
-    }
-};
 
 const fetchExpense = async (req, res, next) => {
     try {
@@ -37,7 +27,7 @@ const fetchExpense = async (req, res, next) => {
         console.error("error:", err);
         res.status(500).json({ error: "internal server error" });
     }
-}
+};
 
 const addExpense = async (req, res, next) => {
     // const t = await sequelize.transaction();
@@ -50,7 +40,7 @@ const addExpense = async (req, res, next) => {
             amount: amount,
             description: description,
             category: category,
-            // UserId: req.user.id,
+            // userId: req.user.id,
             userId: req.user._id,
         };
         // await Expense.create(newExpense, { transaction: t });
@@ -133,7 +123,7 @@ const updateExpense = async (req, res, next) => {
         };
         const totalExpenses = Number(req.user.totalExpenses) - Number(expense.amount) + Number(amount);
         // await Expense.update(updatedExpense,
-        //     { where: { id: expenseId, UserId: req.user.id }, transaction: t }
+        //     { where: { id: expenseId, userId: req.user.id }, transaction: t }
         // );
         await Expense.updateOne(
             { _id: expenseId, userId: req.user._id },
@@ -164,7 +154,6 @@ const updateExpense = async (req, res, next) => {
 };
 
 module.exports = {
-    expensePage,
     fetchExpense,
     addExpense,
     deleteExpense,
