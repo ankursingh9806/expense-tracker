@@ -7,21 +7,15 @@ const fetchExpense = async (req, res, next) => {
         const { page = 1 } = req.query;
         const limit = 5;
         const offset = (page - 1) * limit;
-        // const totalExpenses = await Expense.count({
-        //     where: { UserId: req.user.id }
-        // });
-        const totalExpenses = await Expense.countDocuments({
-            userId: req.user._id
-        });
         // const expenses = await Expense.findAndCountAll({
-        //     where: { UserId: req.user.id },
+        //     where: { userId: req.user.id },
         //     limit: limit,
         //     offset: offset
         // });
         const expenses = await Expense.find({ userId: req.user._id })
             .limit(limit)
             .skip(offset);
-        const totalPages = Math.ceil(totalExpenses / limit);
+        const totalPages = Math.ceil(expenses.count / limit);
         res.status(200).json({ expenses, totalPages, message: "expenses fetched" });
     } catch (err) {
         console.error("error:", err);
@@ -77,10 +71,7 @@ const deleteExpense = async (req, res, next) => {
         const { expenseId } = req.params;
         // const expense = await Expense.findByPk(expenseId);
         const expense = await Expense.findById(expenseId);
-        // await expense.destroy({
-        //     where: { UserId: req.user.id }, transaction: t
-        // }
-        // );
+        // await expense.destroy();
         await Expense.deleteOne({ userId: req.user._id, _id: expenseId })
         // update total expense
         const totalExpenses = Number(req.user.totalExpenses) - Number(expense.amount);

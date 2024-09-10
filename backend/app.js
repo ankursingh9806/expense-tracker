@@ -8,7 +8,8 @@ const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
 
-const sequelize = require("./utils/database");
+// const sequelize = require("./utils/database");
+const mongoose = require("./utils//database");
 const userRoute = require("./routes/userRoute");
 const expenseRoute = require("./routes/expenseRoute");
 const purchaseRoute = require("./routes/purchaseRoute");
@@ -16,10 +17,10 @@ const leaderboardRoute = require("./routes/leaderboardRoute");
 const resetPasswordRoute = require("./routes/resetPasswordRoute");
 const reportRoute = require("./routes/reportRoute");
 
-const User = require("./models/userModel")
-const Expense = require("./models/expenseModel")
-const Order = require("./models/orderModel");
-const ResetPassword = require("./models/resetPasswordModel");
+// const User = require("./models/userModel")
+// const Expense = require("./models/expenseModel")
+// const Order = require("./models/orderModel");
+// const ResetPassword = require("./models/resetPasswordModel");
 
 const app = express();
 
@@ -47,20 +48,6 @@ app.use(cors({
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
 }))
-
-// const sequelize = require("./utils/database");
-const mongoose = require("./utils//database");
-const userRoute = require("./routes/userRoute");
-const expenseRoute = require("./routes/expenseRoute");
-const purchaseRoute = require("./routes/purchaseRoute");
-const leaderboardRoute = require("./routes/leaderboardRoute");
-const resetPasswordRoute = require("./routes/resetPasswordRoute");
-const reportRoute = require("./routes/reportRoute");
-
-// const User = require("./models/userModel")
-// const Expense = require("./models/expenseModel")
-// const Order = require("./models/orderModel");
-// const ResetPassword = require("./models/resetPasswordModel");
 
 app.use("/user", userRoute);
 app.use("/expense", expenseRoute);

@@ -44,10 +44,7 @@ const monthlyReportView = async (req, res, next) => {
         //     where: { date: { [Op.like]: `${month}%`, }, userId: req.user.id }
         // });
         const expenses = await Expense.find({
-            date: {
-                $regex: new RegExp(`^${month}`)
-            },
-            userId: req.user._id
+            date: { $regex: new RegExp(`^${month}`) }, userId: req.user._id
         });
         res.status(200).json({ expenses, message: "monthly report sent" });
     } catch (err) {
@@ -63,10 +60,7 @@ const monthlyReportDownload = async (req, res, next) => {
         //     where: { date: { [Op.like]: `${month}%`, }, userId: req.user.id }
         // });
         const expenses = await Expense.find({
-            date: {
-                $regex: new RegExp(`^${month}`)
-            },
-            userId: req.user._id
+            date: { $regex: new RegExp(`^${month}`) }, userId: req.user._id
         });
         const fileContent = JSON.stringify(expenses);
         const fileName = `expense-${month}.json`;
