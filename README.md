@@ -16,6 +16,8 @@ A simple and secure expense tracker designed to help users manage and track thei
 - **Premium Features**: Unlock premium features like viewing leaderboards and generating reports of their expenses.
 - **Leaderboard (Premium)**: Users can view a leaderboard with rankings based on expense data.
 - **Reports (Premium)**: Users can view and download daily and monthly reports of their expenses.
+- **Logout**: Users can securely log out of the application. Logging back in requires re-entering the password.
+
 
 ## Technology Stack
 
@@ -45,7 +47,7 @@ A simple and secure expense tracker designed to help users manage and track thei
 
 - `GET /password/forgot-password-page` - Retrieves the forgot password page.
 - `POST /password/forgot-password` - Sends a password reset link to the user's registered email.
-- `GET /password/reset-password-page/:requestId` - Retrieves the reset password page using a unique reset token (UUID `resetId`).
+- `GET /password/reset-password-page/:resetId` - Retrieves the reset password page using a unique reset token (UUID `resetId`).
 - `POST /password/reset-password/:resetId` - Resets the user's password using the reset token (UUID `resetId`).
 
 ### Expense Endpoints
