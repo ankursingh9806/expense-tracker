@@ -15,7 +15,8 @@ const fetchExpense = async (req, res, next) => {
         const expenses = await Expense.find({ userId: req.user._id })
             .limit(limit)
             .skip(offset);
-        const totalPages = Math.ceil(expenses.count / limit);
+        const totalExpenses = await Expense.countDocuments({ userId: req.user._id });
+        const totalPages = Math.ceil(totalExpenses / limit);
         res.status(200).json({ expenses, totalPages, message: "expenses fetched" });
     } catch (err) {
         console.error("error:", err);
