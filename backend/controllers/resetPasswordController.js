@@ -31,11 +31,11 @@ const forgotPassword = async (req, res, next) => {
         if (!user) {
             return res.status(404).json({ error: "user not found" });
         }
-        const requestId = uuid.v4();
+        const resetId = uuid.v4();
         const resetData = {
             // userId: user.id,
             userId: user._id,
-            id: requestId,
+            id: resetId,
             active: true
         };
         await ResetPassword.create(resetData);
@@ -55,7 +55,7 @@ const forgotPassword = async (req, res, next) => {
             <h1 style='color: #198754;'>Expense Tracker</h1>
             <h2 style='color: #7e8ba3;'>Reset password</h2>
             <p style='color: #7e8ba3;'>Please click on the link below to reset your account password:</p>
-            <a href="http://localhost:3000/password/reset-password-page/${requestId}" style='color: #7e8ba3; font-weight: bold;'>Reset password</a>`
+            <a href="http://localhost:3000/password/reset-password-page/${resetId}" style='color: #7e8ba3; font-weight: bold;'>Reset password</a>`
         };
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
