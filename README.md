@@ -119,7 +119,7 @@ A simple and secure expense tracker designed to help users manage and track thei
 ![report](/screenshots/15-report.png)
 
 ### reort view
-![reortView](/screenshots/16-reortView.png)
+![reortView](/screenshots/16-reportView.png)
 
 ### report download
 ![reportDownload](/screenshots/17-reportDownload.png)
