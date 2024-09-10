@@ -95,32 +95,32 @@ A simple and secure expense tracker designed to help users manage and track thei
 ![passwordChanged](/screenshots/07-passwordChanged.png)
 
 ### home page
-![home1](/screenshots/09-home.png)
+![home1](/screenshots/08-home.png)
 
 ### add expense
-![home2](/screenshots/10-addExpense.png)
+![home2](/screenshots/09-addExpense.png)
 
 ### pagination
-![profile](/screenshots/11-pagination.png)
+![profile](/screenshots/10-pagination.png)
 
 ### unlock premium
-![publishBlog](/screenshots/12-unlockPremium.png)
+![publishBlog](/screenshots/11-unlockPremium.png)
 
 ### payment
-![viewMyBlog](/screenshots/13-payment.png)
+![viewMyBlog](/screenshots/12-payment.png)
 
 ### premium unlocked
-![viewPopularBlog](/screenshots/14-premiumUnlocked.png)
+![viewPopularBlog](/screenshots/13-premiumUnlocked.png)
 
 
 ### leaderboard
 ![viewPopularBlog](/screenshots/14-leaderboard.png)
 
 ### report
-![viewPopularBlog](/screenshots/14-report.png)
+![viewPopularBlog](/screenshots/15-report.png)
 
 ### reort view
-![viewPopularBlog](/screenshots/14-reortView.png)
+![viewPopularBlog](/screenshots/16-reortView.png)
 
 ### report download
-![viewPopularBlog](/screenshots/14-reportDownload.png)
+![viewPopularBlog](/screenshots/17-reportDownload.png)
