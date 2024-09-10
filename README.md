@@ -68,7 +68,7 @@ A simple and secure expense tracker designed to help users manage and track thei
 
 ### Report Endpoints
 
-- `Post /premium/daily-report-view` - View the daily expense report.
+- `POST /premium/daily-report-view` - View the daily expense report.
 - `POST /premium/daily-report-download` - Download the daily expense report.
 - `POST /premium/monthly-report-view` - View the monthly expense report.
 - `POST /premium/monthly-report-download` - Download the monthly expense report.
