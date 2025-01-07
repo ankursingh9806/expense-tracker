@@ -21,7 +21,7 @@ A simple and secure expense tracker designed to help users manage and track thei
 
 ## Technology Stack
 
-- **Backend**: Node.js, Express
+- **Backend**: Node.js, Express.js
 - **Frontend**: HTML5, CSS3, JavaScript, Bootstrap
 - **Authentication**: JSON Web Token (JWT)
 - **Database**: MySQL with Sequelize ORM, MongoDB with Mongoose ODM (in a separate branch)
