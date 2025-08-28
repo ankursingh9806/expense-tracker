@@ -1,8 +1,12 @@
 {
-  "devDependencies": {
-    "express": "^4.19.2"
+  "name": "expense-tracker",
+  "version": "1.0.0",
+  "main": "backend/app.js",
+  "scripts": {
+    "start": "node backend/app.js"
   },
   "dependencies": {
+    "express": "^4.19.2",
     "aws-sdk": "^2.1631.0",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
